@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#0097a7</color>
+    <color name="colorPrimaryDark">#006978</color>
+    <color name="colorPrimaryLight">#56c8d8</color>
+    <!--<color name="colorAccent">#FFF</color> -->
+    <color name="colorAccent">#ff5722</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+
+    <!-- Escala de valores de precios/ distancia -->
+    <color name="colorHighValue">#d62313</color>
+    <color name="colorMediumValue">#e98200</color>
+    <color name="colorLowValue">#26c36b</color>
 </resources>

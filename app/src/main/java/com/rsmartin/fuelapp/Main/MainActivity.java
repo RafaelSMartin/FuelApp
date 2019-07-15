@@ -1,4 +1,4 @@
-package com.rsmartin.fuelapp;
+package com.rsmartin.fuelapp.Main;
 
 import android.os.Bundle;
 
@@ -14,6 +14,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.rsmartin.fuelapp.R;
 import com.rsmartin.fuelapp.Utils.SharedPref;
 
 import androidx.drawerlayout.widget.DrawerLayout;
