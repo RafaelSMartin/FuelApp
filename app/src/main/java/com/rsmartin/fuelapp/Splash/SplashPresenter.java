@@ -3,7 +3,10 @@ package com.rsmartin.fuelapp.Splash;
 import android.util.Log;
 
 import com.rsmartin.fuelapp.App;
+import com.rsmartin.fuelapp.remote.ApiDataGob.ListaEESSPrecioWraper;
 import com.rsmartin.fuelapp.remote.ApiDataGob.Model;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +36,6 @@ public class SplashPresenter implements ContractSplash.SplashPresenter {
                     Model data = response.body();
                     model.map(data);
                 }
-
             }
 
             @Override
@@ -41,13 +43,10 @@ public class SplashPresenter implements ContractSplash.SplashPresenter {
                 Log.d(TAG, "onFailure: "+t.getMessage().toString());
             }
         });
-
-
     }
 
     @Override
-    public void showResultMap(String response) {
-        view.hideProgress();
-        view.showResult(response);
+    public void showResultMap(List<ListaEESSPrecioWraper> wraperList) {
+        view.showResult(wraperList);
     }
 }

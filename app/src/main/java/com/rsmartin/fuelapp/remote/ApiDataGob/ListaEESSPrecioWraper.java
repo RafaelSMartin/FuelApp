@@ -1,8 +1,9 @@
 package com.rsmartin.fuelapp.remote.ApiDataGob;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class ListaEESSPrecioWraper {
+public class ListaEESSPrecioWraper implements Serializable {
 
     private String rotulo;
     private String address;
@@ -176,4 +177,6 @@ public class ListaEESSPrecioWraper {
                 ", municipio='" + municipio + '\'' +
                 '}';
     }
+
+
 }

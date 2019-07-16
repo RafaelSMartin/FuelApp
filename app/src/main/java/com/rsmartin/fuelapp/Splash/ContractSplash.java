@@ -1,18 +1,22 @@
 package com.rsmartin.fuelapp.Splash;
 
+import com.rsmartin.fuelapp.remote.ApiDataGob.ListaEESSPrecioWraper;
 import com.rsmartin.fuelapp.remote.ApiDataGob.Model;
+
+import java.util.List;
 
 interface ContractSplash {
 
     interface SplashView{
-        void showResult(String response);
+        void showResult(List<ListaEESSPrecioWraper> wraperList);
         void showProgress();
         void hideProgress();
     }
 
     interface SplashPresenter{
         void getOilsGob();
-        void showResultMap(String response);
+
+        void showResultMap(List<ListaEESSPrecioWraper> wraperList);
 
     }
 
@@ -20,7 +24,4 @@ interface ContractSplash {
         void map(Model response);
     }
 
-
-//    void saveModelGob(String model);
-//    void launchGoogleMaps();
 }

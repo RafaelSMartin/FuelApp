@@ -19,15 +19,33 @@ public class SplashModel implements ContractSplash.SplashModel {
 
     @Override
     public void map(Model response) {
-        List<ListaEESSPrecioWraper> modelWraper = new ArrayList<>();
+        List<ListaEESSPrecio> list = response.getListaEESSPrecio();
+        List<ListaEESSPrecioWraper> wraperList = new ArrayList<>();
 
-//        for (int i = 0; i < response.getListaEESSPrecio().size(); i++){
+        for (ListaEESSPrecio aux : list) {
+            ListaEESSPrecioWraper wrapperModel = new ListaEESSPrecioWraper();
 
-//            modelWraper.get(i).setRotulo(response.getListaEESSPrecio().get(i).getRotulo());
-//            modelWraper.get(i).setLat(response.getListaEESSPrecio().get(i).getLatitud());
-//            modelWraper.get(i).setLon(response.getListaEESSPrecio().get(i).getLongitud());
-//        }
-        //String resultado = response.getListaEESSPrecio().toString();
-        presenter.showResultMap("resultado");
+            wrapperModel.setRotulo(aux.getRotulo());
+            wrapperModel.setAddress(aux.getDirecciN());
+            wrapperModel.setHorary(aux.getHorario());
+
+            wrapperModel.setLat(aux.getLatitud());
+            wrapperModel.setLon(aux.getLongitud());
+
+            wrapperModel.setPrecioBiodiesel(aux.getPrecioBiodiesel());
+            wrapperModel.setPrecioGasoleoA(aux.getPrecioGasoleoA());
+            wrapperModel.setPrecioGasoleoB(aux.getPrecioGasoleoB());
+            wrapperModel.setPrecioGasolina95Proteccion(aux.getPrecioGasolina95ProtecciN());
+            wrapperModel.setPrecioGasolina98(aux.getPrecioGasolina98());
+            wrapperModel.setPrecioNuevoGasoleoA(aux.getPrecioNuevoGasoleoA());
+
+            wrapperModel.setProvincia(aux.getProvincia());
+            wrapperModel.setLocalidad(aux.getLocalidad());
+            wrapperModel.setMunicipio(aux.getMunicipio());
+
+            wraperList.add(wrapperModel);
+        }
+
+        presenter.showResultMap(wraperList);
     }
 }
