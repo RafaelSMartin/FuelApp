@@ -1,8 +1,8 @@
 package com.rsmartin.fuelapp.Splash;
 
 
+import com.rsmartin.fuelapp.db.entity.ListaEESSPrecioWraper;
 import com.rsmartin.fuelapp.remote.ApiDataGob.ListaEESSPrecio;
-import com.rsmartin.fuelapp.remote.ApiDataGob.ListaEESSPrecioWraper;
 import com.rsmartin.fuelapp.remote.ApiDataGob.Model;
 
 import java.util.ArrayList;
@@ -32,11 +32,11 @@ public class SplashModel implements ContractSplash.SplashModel {
             wrapperModel.setLat(aux.getLatitud());
             wrapperModel.setLon(aux.getLongitud());
 
-            wrapperModel.setPrecioBiodiesel(aux.getPrecioBiodiesel());
+            wrapperModel.setPrecioBiodiesel(String.valueOf(aux.getPrecioBiodiesel()));
             wrapperModel.setPrecioGasoleoA(aux.getPrecioGasoleoA());
             wrapperModel.setPrecioGasoleoB(aux.getPrecioGasoleoB());
             wrapperModel.setPrecioGasolina95Proteccion(aux.getPrecioGasolina95ProtecciN());
-            wrapperModel.setPrecioGasolina98(aux.getPrecioGasolina98());
+            wrapperModel.setPrecioGasolina98(String.valueOf(aux.getPrecioGasolina98()));
             wrapperModel.setPrecioNuevoGasoleoA(aux.getPrecioNuevoGasoleoA());
 
             wrapperModel.setProvincia(aux.getProvincia());

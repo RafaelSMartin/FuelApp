@@ -8,9 +8,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.rsmartin.fuelapp.Main.MainActivity;
 import com.rsmartin.fuelapp.R;
-import com.rsmartin.fuelapp.remote.ApiDataGob.ListaEESSPrecioWraper;
+import com.rsmartin.fuelapp.db.database.AppDB;
+import com.rsmartin.fuelapp.db.entity.ListaEESSPrecioWraper;
+import com.rsmartin.fuelapp.ui.Main.MainActivity;
 
 import java.util.List;
 
@@ -38,11 +39,14 @@ public class SplashView extends AppCompatActivity implements ContractSplash.Spla
         presenter = new SplashPresenter(this);
 
         presenter.getOilsGob();
-
     }
 
     @Override
     public void showResult(List<ListaEESSPrecioWraper> wraperList) {
+        for (ListaEESSPrecioWraper aux : wraperList) {
+            AppDB.getInstance(getApplicationContext()).listaEESSPrecioWraperDAO().insertListaPrecioWraper(aux);
+        }
+
         tvResponse.setText("finalizado");
         hideProgress();
         startActivity(new Intent(this, MainActivity.class));

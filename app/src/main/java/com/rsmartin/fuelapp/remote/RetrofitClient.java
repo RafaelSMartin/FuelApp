@@ -16,7 +16,7 @@ public class RetrofitClient {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         // añade logging al final del interceptor
-        httpClient.addInterceptor(logging);
+        httpClient.addInterceptor(logging).build();
 
         if(retrofit == null){
             retrofit = new Retrofit.Builder()

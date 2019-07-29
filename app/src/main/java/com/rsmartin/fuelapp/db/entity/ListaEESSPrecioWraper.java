@@ -1,24 +1,69 @@
-package com.rsmartin.fuelapp.remote.ApiDataGob;
+package com.rsmartin.fuelapp.db.entity;
+
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import com.rsmartin.fuelapp.IExtras;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity(tableName = IExtras.NAME_TABLE)
 public class ListaEESSPrecioWraper implements Serializable {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private int id;
 
+    @ColumnInfo(name = "rotulo")
     private String rotulo;
+
+    @ColumnInfo(name = "address")
     private String address;
+
+    @ColumnInfo(name = "horary")
     private String horary;
+
+    @ColumnInfo(name = "lat")
     private String lat;
+
+    @ColumnInfo(name = "lon")
     private String lon;
-    private Object precioBiodiesel;
+
+    @ColumnInfo(name = "precioBiodiesel")
+    private String precioBiodiesel;
+
+    @ColumnInfo(name = "precioGasoleoA")
     private String precioGasoleoA;
+
+    @ColumnInfo(name = "precioGasoleoB")
     private String precioGasoleoB;
+
+    @ColumnInfo(name = "precioGasolina95Proteccion")
     private String precioGasolina95Proteccion;
-    private Object precioGasolina98;
+
+    @ColumnInfo(name = "precioGasolina98")
+    private String precioGasolina98;
+
+    @ColumnInfo(name = "precioNuevoGasoleoA")
     private String precioNuevoGasoleoA;
+
+    @ColumnInfo(name = "provincia")
     private String provincia;
+
+    @ColumnInfo(name = "localidad")
     private String localidad;
+
+    @ColumnInfo(name = "municipio")
     private String municipio;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getRotulo() {
         return rotulo;
@@ -60,11 +105,11 @@ public class ListaEESSPrecioWraper implements Serializable {
         this.lon = lon;
     }
 
-    public Object getPrecioBiodiesel() {
+    public String getPrecioBiodiesel() {
         return precioBiodiesel;
     }
 
-    public void setPrecioBiodiesel(Object precioBiodiesel) {
+    public void setPrecioBiodiesel(String precioBiodiesel) {
         this.precioBiodiesel = precioBiodiesel;
     }
 
@@ -92,11 +137,11 @@ public class ListaEESSPrecioWraper implements Serializable {
         this.precioGasolina95Proteccion = precioGasolina95Proteccion;
     }
 
-    public Object getPrecioGasolina98() {
+    public String getPrecioGasolina98() {
         return precioGasolina98;
     }
 
-    public void setPrecioGasolina98(Object precioGasolina98) {
+    public void setPrecioGasolina98(String precioGasolina98) {
         this.precioGasolina98 = precioGasolina98;
     }
 
@@ -175,7 +220,7 @@ public class ListaEESSPrecioWraper implements Serializable {
                 ", provincia='" + provincia + '\'' +
                 ", localidad='" + localidad + '\'' +
                 ", municipio='" + municipio + '\'' +
-                '}';
+                '}' + "\n";
     }
 
 

@@ -1,6 +1,6 @@
 package com.rsmartin.fuelapp.Splash;
 
-import com.rsmartin.fuelapp.remote.ApiDataGob.ListaEESSPrecioWraper;
+import com.rsmartin.fuelapp.db.entity.ListaEESSPrecioWraper;
 import com.rsmartin.fuelapp.remote.ApiDataGob.Model;
 
 import java.util.List;

@@ -3,7 +3,7 @@ package com.rsmartin.fuelapp.Splash;
 import android.util.Log;
 
 import com.rsmartin.fuelapp.App;
-import com.rsmartin.fuelapp.remote.ApiDataGob.ListaEESSPrecioWraper;
+import com.rsmartin.fuelapp.db.entity.ListaEESSPrecioWraper;
 import com.rsmartin.fuelapp.remote.ApiDataGob.Model;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class SplashPresenter implements ContractSplash.SplashPresenter {
 
             @Override
             public void onFailure(Call<Model> call, Throwable t) {
-                Log.d(TAG, "onFailure: "+t.getMessage().toString());
+                Log.d("getOilsGob", "onFailure: " + t.getMessage().toString());
             }
         });
     }

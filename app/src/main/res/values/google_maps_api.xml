@@ -1,0 +1,27 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=50:98:68:55:0E:9B:CA:4B:99:74:2B:9D:6A:33:7D:B7:25:D3:2B:6D%3Bcom.master.precioccombustible.maps
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    50:98:68:55:0E:9B:CA:4B:99:74:2B:9D:6A:33:7D:B7:25:D3:2B:6D
+
+    SHA-1 certificate fingerprint:
+    50:98:68:55:0E:9B:CA:4B:99:74:2B:9D:6A:33:7D:B7:25:D3:2B:6D
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <!--<string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">AIzaSyC4HeO68by8DnUG925lzry7JziKtsCK-6I</string>-->
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+        AIzaSyBaebn0qLJi45ogbu-ItA0hk4BB6Gs2UF4
+    </string>
+</resources>
