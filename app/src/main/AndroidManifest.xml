@@ -3,11 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.rsmartin.fuelapp">
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -29,14 +34,18 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBaebn0qLJi45ogbu-ItA0hk4BB6Gs2UF4" />
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".ui.maps.MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/mi_admodAppId" />
         <meta-data
-            android:value="true"
-            android:name="ADMOB_ALLOW_LOCATION_FOR_ADS" />
+            android:name="ADMOB_ALLOW_LOCATION_FOR_ADS"
+            android:value="true" />
 
         <activity
             android:name=".Splash.SplashView"
@@ -49,7 +58,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.Main.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:theme="@style/FullTheme" />
     </application>
 

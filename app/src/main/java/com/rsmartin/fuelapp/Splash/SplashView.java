@@ -8,10 +8,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.rsmartin.fuelapp.IExtras;
 import com.rsmartin.fuelapp.R;
 import com.rsmartin.fuelapp.db.database.AppDB;
 import com.rsmartin.fuelapp.db.entity.ListaEESSPrecioWraper;
-import com.rsmartin.fuelapp.ui.Main.MainActivity;
+import com.rsmartin.fuelapp.ui.main.MainActivity;
 
 import java.util.List;
 
@@ -38,7 +39,15 @@ public class SplashView extends AppCompatActivity implements ContractSplash.Spla
 
         presenter = new SplashPresenter(this);
 
-        presenter.getOilsGob();
+        if (AppDB.getInstance(getApplicationContext()).getOpenHelper().getDatabaseName() == null ||
+                !AppDB.getInstance(getApplicationContext()).getOpenHelper().getDatabaseName().equals(IExtras.NAME_TABLE)) {
+            presenter.getOilsGob();
+        } else {
+            tvResponse.setText("cargado ya de antes");
+            hideProgress();
+            startActivity(new Intent(this, MainActivity.class));
+        }
+
     }
 
     @Override

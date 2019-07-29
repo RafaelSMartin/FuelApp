@@ -1,5 +1,6 @@
-package com.rsmartin.fuelapp.ui.Main;
+package com.rsmartin.fuelapp.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -14,10 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.rsmartin.fuelapp.R;
-import com.rsmartin.fuelapp.db.database.AppDB;
-import com.rsmartin.fuelapp.db.entity.ListaEESSPrecioWraper;
-
-import java.util.List;
+import com.rsmartin.fuelapp.ui.maps.MapsActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +42,7 @@ public class MainActivity extends AppCompatActivity
         initFloatingButton();
         initDrawer();
 
-        List<ListaEESSPrecioWraper> auxList = AppDB.getInstance(getApplicationContext()).listaEESSPrecioWraperDAO().findAllListaPrecioWraper();
+        //List<ListaEESSPrecioWraper> auxList = AppDB.getInstance(getApplicationContext()).listaEESSPrecioWraperDAO().findAllListaPrecioWraper();
 
 
 //        TextView tv = findViewById(R.id.textView_hello);
@@ -55,6 +53,9 @@ public class MainActivity extends AppCompatActivity
 //            auxString.append(aux.toString());
 //        }
 //        tv.setText(auxString.toString());
+
+        startActivity(new Intent(this, MapsActivity.class));
+
     }
 
     private void initToolbar(){
