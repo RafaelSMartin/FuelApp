@@ -31,4 +31,8 @@
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="fuelapp_ClusterIcon.TextAppearance" parent="amu_ClusterIcon.TextAppearance">
+        <item name="android:textColor">@color/icons</item>
+    </style>
 </resources>

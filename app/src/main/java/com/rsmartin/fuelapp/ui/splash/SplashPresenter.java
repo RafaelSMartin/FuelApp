@@ -1,4 +1,4 @@
-package com.rsmartin.fuelapp.Splash;
+package com.rsmartin.fuelapp.ui.splash;
 
 import android.util.Log;
 

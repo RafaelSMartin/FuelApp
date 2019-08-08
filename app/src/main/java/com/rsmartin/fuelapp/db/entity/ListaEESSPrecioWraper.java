@@ -4,13 +4,16 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterItem;
 import com.rsmartin.fuelapp.IExtras;
+import com.rsmartin.fuelapp.Utils.Utils;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity(tableName = IExtras.NAME_TABLE)
-public class ListaEESSPrecioWraper implements Serializable {
+public class ListaEESSPrecioWraper implements Serializable, ClusterItem {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
@@ -224,4 +227,18 @@ public class ListaEESSPrecioWraper implements Serializable {
     }
 
 
+    @Override
+    public LatLng getPosition() {
+        return new LatLng(Utils.replaceComaToDot(lat), Utils.replaceComaToDot(lon));
+    }
+
+    @Override
+    public String getTitle() {
+        return rotulo;
+    }
+
+    @Override
+    public String getSnippet() {
+        return null;
+    }
 }

@@ -21,7 +21,7 @@ public abstract class AppDB extends RoomDatabase {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(), AppDB.class,
                     IExtras.NAME_TABLE)
-                    .allowMainThreadQueries()
+//                    .allowMainThreadQueries()
                     .build();
         }
         return instance;
