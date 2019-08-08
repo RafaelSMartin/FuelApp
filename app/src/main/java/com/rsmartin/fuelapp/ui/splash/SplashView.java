@@ -1,6 +1,7 @@
 package com.rsmartin.fuelapp.ui.splash;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -8,9 +9,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.rsmartin.fuelapp.App;
+import com.rsmartin.fuelapp.IExtras;
 import com.rsmartin.fuelapp.R;
-import com.rsmartin.fuelapp.db.database.InsertListaPrecioWraperTask;
+import com.rsmartin.fuelapp.Utils.SharedPref;
+import com.rsmartin.fuelapp.db.database.AppDB;
 import com.rsmartin.fuelapp.db.entity.ListaEESSPrecioWraper;
+import com.rsmartin.fuelapp.remote.ApiDataGob.ModeloListaGasolineras;
 import com.rsmartin.fuelapp.ui.maps.MapsActivity;
 
 import java.util.ArrayList;
@@ -24,8 +29,6 @@ public class SplashView extends AppCompatActivity implements ContractSplash.Spla
     private final String TAG = "SplashView";
 
     private SplashPresenter presenter;
-
-    public static List<ListaEESSPrecioWraper> listSplash;
 
     @BindView(R.id.response)
     TextView tvResponse;
@@ -41,15 +44,13 @@ public class SplashView extends AppCompatActivity implements ContractSplash.Spla
 
         presenter = new SplashPresenter(this);
 
-//        if (AppDB.getInstance(getApplicationContext()).getOpenHelper().getDatabaseName() == null ||
-//                !AppDB.getInstance(getApplicationContext()).getOpenHelper().getDatabaseName().equals(IExtras.NAME_TABLE)) {
-//            presenter.getOilsGob();
-//        } else {
-//            tvResponse.setText("cargado ya de antes");
-//            hideProgress();
-//            startActivity(new Intent(this, MainActivity.class));
-//        }
-        presenter.getOilsGob();
+        if (!SharedPref.getInstance().getBooleanPreferences(IExtras.IS_NOT_FIRST_TIME)) {
+            SharedPref.getInstance().saveBooleanPreferences(IExtras.IS_NOT_FIRST_TIME, true);
+            presenter.getOilsGob();
+        } else {
+            FindAllListaPrecioWraperTask findAllListaPrecioWraperTask = new FindAllListaPrecioWraperTask();
+            findAllListaPrecioWraperTask.execute();
+        }
     }
 
     @Override
@@ -57,22 +58,32 @@ public class SplashView extends AppCompatActivity implements ContractSplash.Spla
         InsertListaPrecioWraperTask insertListaPrecioWraperTask = new InsertListaPrecioWraperTask();
         insertListaPrecioWraperTask.execute(wraperList);
 
-//        for (ListaEESSPrecioWraper aux : wraperList) {
-//            AppDB.getInstance(getApplicationContext()).listaEESSPrecioWraperDAO().insertListaPrecioWraper(aux);
-//        }
+        showResultFromRoom(new ModeloListaGasolineras(wraperList));
+    }
 
+    public void showResultFromRoom(ModeloListaGasolineras list) {
 
+        ModeloListaGasolineras newModelpList = new ModeloListaGasolineras(new ArrayList<>());
+        List<ListaEESSPrecioWraper> lista = new ArrayList<>();
         int iterator = 0;
-        listSplash = new ArrayList<>();
-        for (ListaEESSPrecioWraper item : wraperList) {
-            if (iterator <= 50) {
-                listSplash.add(item);
+
+        for (ListaEESSPrecioWraper item : list.getListaEESSPrecioWrapers()) {
+            if (iterator <= 100) {
+                lista.add(item);
                 iterator++;
             }
         }
+        newModelpList.setListaEESSPrecioWrapers(lista);
+
         tvResponse.setText("finalizado");
         hideProgress();
-        startActivity(new Intent(this, MapsActivity.class));
+
+
+        Intent i = new Intent(this, MapsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("value", newModelpList);
+        i.putExtras(bundle);
+        startActivity(i);
     }
 
     @Override
@@ -86,4 +97,33 @@ public class SplashView extends AppCompatActivity implements ContractSplash.Spla
         if (progressBar.getVisibility() == View.VISIBLE)
             progressBar.setVisibility(View.INVISIBLE);
     }
+
+    public class FindAllListaPrecioWraperTask extends AsyncTask<Void, Void, List<ListaEESSPrecioWraper>> {
+
+        @Override
+        protected List<ListaEESSPrecioWraper> doInBackground(Void... voids) {
+            return AppDB.getInstance(App.getInstance().getApplicationContext())
+                    .listaEESSPrecioWraperDAO().findAllListaPrecioWraper();
+        }
+
+        @Override
+        protected void onPostExecute(List<ListaEESSPrecioWraper> lists) {
+            showResultFromRoom(new ModeloListaGasolineras(lists));
+        }
+    }
+
+    public class InsertListaPrecioWraperTask extends AsyncTask<List<ListaEESSPrecioWraper>, Void, Void> {
+        @Override
+        protected Void doInBackground(List<ListaEESSPrecioWraper>... lists) {
+
+            for (ListaEESSPrecioWraper item : lists[0]) {
+                AppDB.getInstance(App.getInstance().getApplicationContext())
+                        .listaEESSPrecioWraperDAO().insertListaPrecioWraper(item);
+            }
+            return null;
+        }
+    }
+
+
+
 }

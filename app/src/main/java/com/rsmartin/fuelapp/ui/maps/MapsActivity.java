@@ -29,7 +29,7 @@ import com.google.maps.android.ui.IconGenerator;
 import com.google.maps.android.ui.SquareTextView;
 import com.rsmartin.fuelapp.R;
 import com.rsmartin.fuelapp.db.entity.ListaEESSPrecioWraper;
-import com.rsmartin.fuelapp.ui.splash.SplashView;
+import com.rsmartin.fuelapp.remote.ApiDataGob.ModeloListaGasolineras;
 
 import java.util.List;
 
@@ -44,6 +44,13 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            ModeloListaGasolineras modeloListaGasolineras = (ModeloListaGasolineras) getIntent().getSerializableExtra("value");
+            if (modeloListaGasolineras != null)
+                auxList = modeloListaGasolineras.getListaEESSPrecioWrapers();
+        }
+
 //        auxList = AppDB.getInstance(getApplicationContext()).listaEESSPrecioWraperDAO().findAllListaPrecioWraper();
 //        FindAllListaPrecioWraperTask findAllListaPrecioWraperTask = new FindAllListaPrecioWraperTask();
 //        try {
@@ -54,7 +61,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 //            e.printStackTrace();
 //        }
 
-        auxList = SplashView.listSplash;
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
