@@ -80,6 +80,9 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().isCompassEnabled();
+        mMap.getUiSettings().isZoomControlsEnabled();
+        mMap.setMyLocationEnabled(true);
 
 //        DisplayMetrics metrics = new DisplayMetrics();
 //        getWindowManager().getDefaultDisplay().getMetrics(metrics);
