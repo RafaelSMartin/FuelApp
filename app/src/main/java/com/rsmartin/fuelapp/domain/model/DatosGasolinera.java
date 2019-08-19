@@ -1,30 +1,73 @@
 package com.rsmartin.fuelapp.domain.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
+import com.rsmartin.fuelapp.IExtras;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 import static com.rsmartin.fuelapp.utils.Utils.replaceComaToDot;
 
+@Entity(tableName = IExtras.NAME_TABLE)
 public class DatosGasolinera implements ClusterItem, Serializable {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private int id;
 
+    @ColumnInfo(name = "rotulo")
     private String rotulo;
+
+    @ColumnInfo(name = "address")
     private String address;
+
+    @ColumnInfo(name = "horary")
     private String horary;
+
+    @ColumnInfo(name = "lat")
     private String lat;
+
+    @ColumnInfo(name = "lon")
     private String lon;
+
+    @ColumnInfo(name = "precioBiodiesel")
+    private String precioBiodiesel;
+
+    @ColumnInfo(name = "precioGasoleoA")
+    private String precioGasoleoA;
+
+    @ColumnInfo(name = "precioGasoleoB")
+    private String precioGasoleoB;
+
+    @ColumnInfo(name = "precioGasolina95Proteccion")
+    private String precioGasolina95Proteccion;
+
+    @ColumnInfo(name = "precioGasolina98")
+    private String precioGasolina98;
+
+    @ColumnInfo(name = "precioNuevoGasoleoA")
+    private String precioNuevoGasoleoA;
+
+    @ColumnInfo(name = "provincia")
     private String provincia;
+
+    @ColumnInfo(name = "localidad")
     private String localidad;
+
+    @ColumnInfo(name = "municipio")
     private String municipio;
 
-    private String precioBiodiesel;
-    private String precioGasoleoA;
-    private String precioGasoleoB;
-    private String precioGasolina95Proteccion;
-    private String precioGasolina98;
-    private String precioNuevoGasoleoA;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getRotulo() {
         return rotulo;

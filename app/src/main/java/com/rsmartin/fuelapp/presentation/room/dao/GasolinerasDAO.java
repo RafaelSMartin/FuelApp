@@ -5,7 +5,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.rsmartin.fuelapp.presentation.room.entity.DatosGasolineraEntity;
+import com.rsmartin.fuelapp.domain.model.DatosGasolinera;
 
 import java.util.List;
 
@@ -13,13 +13,13 @@ import java.util.List;
 public interface GasolinerasDAO {
 
     @Insert
-    void insertPrecioGasolinera(DatosGasolineraEntity datosGasolineraEntity);
+    void insertPrecioGasolinera(DatosGasolinera datosGasolinera);
 
     @Query("SELECT * FROM fuelapp")
-    List<DatosGasolineraEntity> findAllPreciosGasolineras();
+    List<DatosGasolinera> findAllPreciosGasolineras();
 
     @Update
-    void updatePreciosGasolinera(DatosGasolineraEntity datosGasolineraEntity);
+    void updatePreciosGasolinera(DatosGasolinera datosGasolinera);
 
 
 }
