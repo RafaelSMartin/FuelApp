@@ -1,5 +1,6 @@
 package com.rsmartin.fuelapp.presentation.ui.splash;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
@@ -10,10 +11,18 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.rsmartin.fuelapp.App;
 import com.rsmartin.fuelapp.IExtras;
 import com.rsmartin.fuelapp.R;
@@ -23,6 +32,7 @@ import com.rsmartin.fuelapp.presentation.internal.android.SharedPref;
 import com.rsmartin.fuelapp.presentation.room.database.AppDB;
 import com.rsmartin.fuelapp.presentation.ui.AbstractActivity;
 import com.rsmartin.fuelapp.presentation.ui.map.MapsActivity;
+import com.rsmartin.fuelapp.utils.AppDialog;
 import com.rsmartin.fuelapp.utils.Utils;
 
 import java.util.ArrayList;
@@ -39,7 +49,9 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
 
     private FusedLocationProviderClient fusedLocationClient;
     private Location lastLocation;
-    private LatLng currentLatLon;
+    private LatLng currentLatLon = new LatLng(0, 0);
+
+    private AlertDialog.Builder dialogBuilder = null;
 
     @Inject
     SplashPresenter splashPresenter;
@@ -59,8 +71,37 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
         getApplicationComponent().inject(this);
         splashPresenter.setView(this);
 
-        initLocation();
+        Dexter.withActivity(SplashActivity.this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        initLocation();
+                        getOils();
+                    }
 
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            AppDialog.showDialog(SplashActivity.this, "Permiso Localizacion",
+                                    "Accede a Ajustes de Aplicaciones y concede permisos :)", true);
+                        } else {
+                            AppDialog.showDialog(SplashActivity.this, "Permiso Localizacion",
+                                    "Sin el permiso FuelApp no funcionará correctamente :(", true);
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                })
+                .onSameThread()
+                .check();
+
+    }
+
+    private void getOils() {
         if (!SharedPref.getInstance().getBooleanPreferences(IExtras.IS_NOT_FIRST_TIME)) {
             Log.e(TAG, "onCreate: Primera vez // Llama Retrofit");
             SharedPref.getInstance().saveBooleanPreferences(IExtras.IS_NOT_FIRST_TIME, true);
@@ -70,7 +111,6 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
             FindAllListaPrecioWraperTask findAllListaPrecioWraperTask = new FindAllListaPrecioWraperTask();
             findAllListaPrecioWraperTask.execute();
         }
-
     }
 
     @SuppressLint("MissingPermission")
@@ -121,6 +161,8 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
         bundle.putSerializable("value", listaDatosGasolinerasShort);
         i.putExtras(bundle);
         startActivity(i);
+        finish();
+
     }
 
     public class FindAllListaPrecioWraperTask extends AsyncTask<Void, Void, List<DatosGasolinera>> {
