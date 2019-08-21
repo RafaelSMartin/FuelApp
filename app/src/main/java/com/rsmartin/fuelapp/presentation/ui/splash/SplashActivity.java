@@ -29,7 +29,7 @@ import com.rsmartin.fuelapp.R;
 import com.rsmartin.fuelapp.domain.model.DatosGasolinera;
 import com.rsmartin.fuelapp.domain.model.ListaDatosGasolineras;
 import com.rsmartin.fuelapp.presentation.internal.android.SharedPref;
-import com.rsmartin.fuelapp.presentation.room.database.AppDB;
+import com.rsmartin.fuelapp.presentation.internal.room.database.AppDB;
 import com.rsmartin.fuelapp.presentation.ui.AbstractActivity;
 import com.rsmartin.fuelapp.presentation.ui.map.MapsActivity;
 import com.rsmartin.fuelapp.utils.AppDialog;
@@ -110,6 +110,7 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
             Log.e(TAG, "onCreate: NO Primera vez // Llama Room");
             FindAllListaPrecioWraperTask findAllListaPrecioWraperTask = new FindAllListaPrecioWraperTask();
             findAllListaPrecioWraperTask.execute();
+//            showResultFromRoom(null);
         }
     }
 
@@ -158,7 +159,7 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
 
         Intent i = new Intent(this, MapsActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("value", listaDatosGasolinerasShort);
+        bundle.putSerializable(IExtras.ARGS_LIST_OILS_SHORT, listaDatosGasolinerasShort);
         i.putExtras(bundle);
         startActivity(i);
         finish();

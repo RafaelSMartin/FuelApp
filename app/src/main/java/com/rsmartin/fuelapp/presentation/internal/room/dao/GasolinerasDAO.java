@@ -1,4 +1,4 @@
-package com.rsmartin.fuelapp.presentation.room.dao;
+package com.rsmartin.fuelapp.presentation.internal.room.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;

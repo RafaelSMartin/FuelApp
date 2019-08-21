@@ -1,4 +1,4 @@
-//package com.rsmartin.fuelapp.presentation.room.entity;
+//package com.rsmartin.fuelapp.presentation.internal.room.entity;
 //
 //import androidx.room.ColumnInfo;
 //import androidx.room.Entity;

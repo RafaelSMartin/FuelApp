@@ -1,4 +1,4 @@
-package com.rsmartin.fuelapp.presentation.room.database;
+package com.rsmartin.fuelapp.presentation.internal.room.database;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 import com.rsmartin.fuelapp.IExtras;
 import com.rsmartin.fuelapp.domain.model.DatosGasolinera;
-import com.rsmartin.fuelapp.presentation.room.dao.GasolinerasDAO;
+import com.rsmartin.fuelapp.presentation.internal.room.dao.GasolinerasDAO;
 
 @Database(entities = {DatosGasolinera.class}, version = 1)
 public abstract class AppDB extends RoomDatabase {
