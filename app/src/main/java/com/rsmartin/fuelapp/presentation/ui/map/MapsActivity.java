@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -114,6 +115,13 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         ImageView iv = navigationHeaderView.findViewById(R.id.imageView);
         iv.setImageDrawable(getDrawable(R.mipmap.ic_launcher_round));
 
+        TextView version = navigationView.findViewById(R.id.version);
+        version.setText(new StringBuilder()
+                .append(getResources().getString(R.string.version))
+                .append(" ")
+                .append(getVersionName())
+                .toString());
+
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -125,9 +133,9 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
                 break;
             case R.id.nav_gallery:
                 break;
-            case R.id.nav_slideshow:
+            case R.id.nav_favoritos:
                 break;
-            case R.id.nav_tools:
+            case R.id.nav_preferencias:
                 break;
             case R.id.nav_share:
                 mapsPresenter.shareApp(context);

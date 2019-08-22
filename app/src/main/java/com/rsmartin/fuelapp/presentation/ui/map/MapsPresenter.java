@@ -62,6 +62,6 @@ public class MapsPresenter extends AbstractPresenter<MapsPresenter.View> {
     }
 
     public interface View {
-
+        String getVersionName();
     }
 }

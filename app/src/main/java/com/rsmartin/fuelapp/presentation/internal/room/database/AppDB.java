@@ -10,7 +10,7 @@ import com.rsmartin.fuelapp.IExtras;
 import com.rsmartin.fuelapp.domain.model.DatosGasolinera;
 import com.rsmartin.fuelapp.presentation.internal.room.dao.GasolinerasDAO;
 
-@Database(entities = {DatosGasolinera.class}, version = 1)
+@Database(entities = {DatosGasolinera.class}, version = 1, exportSchema = false)
 public abstract class AppDB extends RoomDatabase {
 
     private static AppDB instance;
