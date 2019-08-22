@@ -21,7 +21,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -43,14 +42,17 @@ import com.rsmartin.fuelapp.R;
 import com.rsmartin.fuelapp.domain.model.DatosGasolinera;
 import com.rsmartin.fuelapp.domain.model.ListaDatosGasolineras;
 import com.rsmartin.fuelapp.presentation.internal.room.database.AppDB;
+import com.rsmartin.fuelapp.presentation.ui.AbstractFragmentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MapsActivity extends FragmentActivity implements MapsPresenter.View,
+public class MapsActivity extends AbstractFragmentActivity implements MapsPresenter.View,
         NavigationView.OnNavigationItemSelectedListener, GoogleMap.OnMarkerClickListener,
         OnMapReadyCallback {
 
@@ -60,12 +62,13 @@ public class MapsActivity extends FragmentActivity implements MapsPresenter.View
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
 
-//    @Inject
-//    MapsPresenter mapsPresenter;
+    @Inject
+    MapsPresenter mapsPresenter;
 
     private GoogleMap mMap;
     private ClusterManager<DatosGasolinera> mClusterManager;
     private List<DatosGasolinera> listOils = new ArrayList<>();
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +76,10 @@ public class MapsActivity extends FragmentActivity implements MapsPresenter.View
         setContentView(R.layout.activity_maps);
         ButterKnife.bind(this);
 
-//        getApplicationComponent().inject(this);
-//        mapsPresenter.setView(this);
+        getApplicationComponent().inject(this);
+        mapsPresenter.setView(this);
+
+        context = getApplicationContext();
 
         if (getIntent().getExtras() != null) {
             ListaDatosGasolineras listaDatosGasolineras = (ListaDatosGasolineras) getIntent().getSerializableExtra(IExtras.ARGS_LIST_OILS_SHORT);
@@ -121,16 +126,13 @@ public class MapsActivity extends FragmentActivity implements MapsPresenter.View
             case R.id.nav_gallery:
                 break;
             case R.id.nav_slideshow:
-
                 break;
             case R.id.nav_tools:
-
                 break;
             case R.id.nav_share:
-
+                mapsPresenter.shareApp(context);
                 break;
             case R.id.nav_send:
-
                 break;
         }
 
@@ -187,22 +189,15 @@ public class MapsActivity extends FragmentActivity implements MapsPresenter.View
     @Override
     public boolean onMarkerClick(Marker marker) {
         // Retrieve the data from the marker.
-        Integer clickCount = (Integer) marker.getTag();
-
         // Check if a click count was set, then display the click count.
-        if (clickCount != null) {
-            clickCount = clickCount + 1;
-            marker.setTag(clickCount);
-            Toast.makeText(this,
-                    marker.getTitle() +
-                            " has been clicked " + clickCount + " times.",
-                    Toast.LENGTH_SHORT).show();
+
+        DatosGasolinera tag = (DatosGasolinera) marker.getTag();
+        if (tag != null) {
+            String municipio = tag.getMunicipio() != null ? tag.getMunicipio() : "";
+            Toast.makeText(this, marker.getTitle() + " has been clicked en " + municipio, Toast.LENGTH_SHORT).show();
         }
 
-        // Return false to indicate that we have not consumed the event and that we wish
-        // for the default behavior to occur (which is for the camera to move such that the
-        // marker is centered and for the marker's info window to open, if it has one).
-        return false;
+        return mapsPresenter.zoomInCluster(mMap, marker, mClusterManager);
     }
 
     private GoogleMap getMap() {
@@ -288,9 +283,7 @@ public class MapsActivity extends FragmentActivity implements MapsPresenter.View
 //                                clusterItem.isIndInteroperable())));
 //
 //            } else {
-//                marker.setIcon(BitmapDescriptorFactory
-//                        .fromResource(getMarkerResource(clusterItem.getStatus(),
-//                                clusterItem.isIndInteroperable())));
+            marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker));
 //            }
         }
 

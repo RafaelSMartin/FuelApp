@@ -146,7 +146,7 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
             if (item.getLat() != null && item.getLon() != null) {
                 isDistanceMinima = Utils.distance(currentLatLon.latitude, currentLatLon.longitude,
                         Utils.replaceComaToDot(item.getLat()), Utils.replaceComaToDot(item.getLon()))
-                        <= 100;
+                        <= 125;
                 if (isDistanceMinima) {
                     lista.add(item);
                 }

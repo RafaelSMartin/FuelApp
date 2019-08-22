@@ -19,4 +19,7 @@
     <string name="mi_adUnitIdTest" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
     <string name="mi_admodAppId" translatable="false">ca-app-pub-5611794729293328~7804426188</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="share_options">Compartir con</string>
+    <string name="share_message_1">Estoy utilizando FuellApp y es genial!</string>
 </resources>
