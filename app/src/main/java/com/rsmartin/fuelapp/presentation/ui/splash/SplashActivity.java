@@ -2,7 +2,6 @@ package com.rsmartin.fuelapp.presentation.ui.splash;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +16,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -31,7 +32,6 @@ import com.rsmartin.fuelapp.domain.model.ListaDatosGasolineras;
 import com.rsmartin.fuelapp.presentation.internal.android.SharedPref;
 import com.rsmartin.fuelapp.presentation.internal.room.database.AppDB;
 import com.rsmartin.fuelapp.presentation.ui.AbstractActivity;
-import com.rsmartin.fuelapp.presentation.ui.map.MapsActivity;
 import com.rsmartin.fuelapp.utils.AppDialog;
 import com.rsmartin.fuelapp.utils.Utils;
 
@@ -157,12 +157,13 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
 
         tvResponse.setText("finalizado");
 
-        Intent i = new Intent(this, MapsActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(IExtras.ARGS_LIST_OILS_SHORT, listaDatosGasolinerasShort);
-        i.putExtras(bundle);
-        startActivity(i);
-        finish();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            navigator.navigateToMaps(getApplicationContext(), listaDatosGasolinerasShort);
+        } else {
+            navigator.navigateToLogin(getApplicationContext());
+        }
 
     }
 

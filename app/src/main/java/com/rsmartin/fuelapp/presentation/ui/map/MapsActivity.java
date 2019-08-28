@@ -13,6 +13,7 @@ import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
@@ -70,6 +73,7 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
     private ClusterManager<DatosGasolinera> mClusterManager;
     private List<DatosGasolinera> listOils = new ArrayList<>();
     private Context context;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +125,34 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
                 .append(" ")
                 .append(getVersionName())
                 .toString());
+
+        Button login = navigationView.findViewById(R.id.login);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            login.setText("LogOut");
+        } else {
+            login.setText("LogIn");
+        }
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (user != null) { //Tengo login
+                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                    mAuth.signOut();
+                    user = null;
+                    login.setText("LogIn");
+                    if (drawer.isDrawerOpen(GravityCompat.START)) {
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
+                    Toast.makeText(getApplicationContext(), "LogOut exitoso", Toast.LENGTH_SHORT).show();
+                } else { // No tengo login
+                    navigator.navigateToLogin(getApplicationContext());
+                    login.setText("LogOut");
+                }
+            }
+        });
 
         navigationView.setNavigationItemSelectedListener(this);
     }

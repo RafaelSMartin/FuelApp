@@ -8,10 +8,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.rsmartin.fuelapp.App;
 import com.rsmartin.fuelapp.presentation.internal.dagger.component.ApplicationComponent;
+import com.rsmartin.fuelapp.presentation.navigator.Navigator;
+
+import javax.inject.Inject;
 
 public abstract class AbstractActivity extends AppCompatActivity {
 
     private ProgressDialog loaderDialog;
+    @Inject
+    public Navigator navigator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

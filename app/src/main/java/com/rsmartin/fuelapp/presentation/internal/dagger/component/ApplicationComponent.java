@@ -5,6 +5,7 @@ import com.rsmartin.fuelapp.presentation.internal.dagger.module.DataModule;
 import com.rsmartin.fuelapp.presentation.internal.dagger.module.DomainModule;
 import com.rsmartin.fuelapp.presentation.ui.AbstractActivity;
 import com.rsmartin.fuelapp.presentation.ui.AbstractFragmentActivity;
+import com.rsmartin.fuelapp.presentation.ui.login.LoginActivity;
 import com.rsmartin.fuelapp.presentation.ui.map.MapsActivity;
 import com.rsmartin.fuelapp.presentation.ui.splash.SplashActivity;
 
@@ -26,6 +27,10 @@ public interface ApplicationComponent {
 
     void inject(SplashActivity splashActivity);
 
+    void inject(LoginActivity loginActivity);
+
     void inject(MapsActivity mapsActivity);
+
+//    void inject(Navigator navigator);
 
 }
