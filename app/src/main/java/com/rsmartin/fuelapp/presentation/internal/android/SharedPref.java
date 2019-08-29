@@ -27,6 +27,10 @@ public class SharedPref {
                 .getSharedPreferences(IExtras.PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
+    public void removePreference(String key) {
+        prefs.edit().remove(key).apply();
+    }
+
     public void saveStringPreferences(String key, String value){
         prefs.edit().putString(key, value).apply();
     }

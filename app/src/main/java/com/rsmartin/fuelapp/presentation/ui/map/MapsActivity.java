@@ -45,6 +45,7 @@ import com.rsmartin.fuelapp.IExtras;
 import com.rsmartin.fuelapp.R;
 import com.rsmartin.fuelapp.domain.model.DatosGasolinera;
 import com.rsmartin.fuelapp.domain.model.ListaDatosGasolineras;
+import com.rsmartin.fuelapp.presentation.internal.android.SharedPref;
 import com.rsmartin.fuelapp.presentation.internal.room.database.AppDB;
 import com.rsmartin.fuelapp.presentation.ui.AbstractFragmentActivity;
 
@@ -116,8 +117,13 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         toggle.syncState();
 
         View navigationHeaderView = navigationView.getHeaderView(0);
-        ImageView iv = navigationHeaderView.findViewById(R.id.imageView);
-        iv.setImageDrawable(getDrawable(R.mipmap.ic_launcher_round));
+        ImageView imageHeader = navigationHeaderView.findViewById(R.id.image_header);
+        TextView nameHeader = navigationHeaderView.findViewById(R.id.name_header);
+        TextView emailHeader = navigationHeaderView.findViewById(R.id.email_header);
+
+        imageHeader.setImageDrawable(getDrawable(R.mipmap.ic_launcher_round));
+        nameHeader.setText(SharedPref.getInstance().getStringPreferences(IExtras.USER_NAME));
+        emailHeader.setText(SharedPref.getInstance().getStringPreferences(IExtras.USER_EMAIL));
 
         TextView version = navigationView.findViewById(R.id.version);
         version.setText(new StringBuilder()
@@ -142,10 +148,15 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
                     FirebaseAuth mAuth = FirebaseAuth.getInstance();
                     mAuth.signOut();
                     user = null;
+                    mapsPresenter.deleteUserInfo();
                     login.setText("LogIn");
                     if (drawer.isDrawerOpen(GravityCompat.START)) {
                         drawer.closeDrawer(GravityCompat.START);
                     }
+                    imageHeader.setImageDrawable(getDrawable(R.mipmap.ic_launcher_round));
+                    nameHeader.setText("FuelApp");
+                    emailHeader.setText("La mejor App de gasolineras");
+
                     Toast.makeText(getApplicationContext(), "LogOut exitoso", Toast.LENGTH_SHORT).show();
                 } else { // No tengo login
                     navigator.navigateToLogin(getApplicationContext());

@@ -9,8 +9,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.rsmartin.fuelapp.IExtras;
 import com.rsmartin.fuelapp.domain.executor.ErrorHandler;
 import com.rsmartin.fuelapp.domain.model.DatosGasolinera;
+import com.rsmartin.fuelapp.presentation.internal.android.SharedPref;
 import com.rsmartin.fuelapp.presentation.ui.AbstractPresenter;
 
 import javax.inject.Inject;
@@ -59,6 +61,14 @@ public class MapsPresenter extends AbstractPresenter<MapsPresenter.View> {
 
     public Cluster<DatosGasolinera> getCluster(Marker marker, ClusterManager<DatosGasolinera> mClusterManager) {
         return ((DefaultClusterRenderer) mClusterManager.getRenderer()).getCluster(marker);
+    }
+
+    public void deleteUserInfo() {
+        SharedPref.getInstance().removePreference(IExtras.USER_NAME);
+        SharedPref.getInstance().removePreference(IExtras.USER_EMAIL);
+        SharedPref.getInstance().removePreference(IExtras.USER_PHOTO_URL);
+        SharedPref.getInstance().removePreference(IExtras.USER_EMAIL_VERIFIED);
+        SharedPref.getInstance().removePreference(IExtras.USER_UID);
     }
 
     public interface View {
