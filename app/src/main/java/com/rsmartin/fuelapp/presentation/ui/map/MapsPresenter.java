@@ -3,6 +3,10 @@ package com.rsmartin.fuelapp.presentation.ui.map;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -20,6 +24,7 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.rsmartin.fuelapp.IExtras;
+import com.rsmartin.fuelapp.R;
 import com.rsmartin.fuelapp.domain.executor.ErrorHandler;
 import com.rsmartin.fuelapp.domain.model.DatosGasolinera;
 import com.rsmartin.fuelapp.presentation.internal.android.SharedPref;
@@ -90,16 +95,82 @@ public class MapsPresenter extends AbstractPresenter<MapsPresenter.View> {
         view.setVisibility(visibility ? android.view.View.VISIBLE : android.view.View.GONE);
     }
 
+    @SuppressLint("MissingPermission")
     public LatLng getMyCurrentLocation(Context context) {
-        LocationManager locationManager = (LocationManager)
-                context.getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
-
-        @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         return new LatLng(latitude, longitude);
+    }
+
+    public Bitmap paintLogo(Context context, String name) {
+        Bitmap bitmapBase = BitmapFactory.decodeResource(
+                context.getResources(), R.drawable.ic_marker);
+        Bitmap bmpBase = bitmapBase.copy(Bitmap.Config.ARGB_8888, true);
+
+        Bitmap bitmapLogo = getImageBitmap(context, name);
+        if (bitmapLogo != null) {
+            Bitmap bmpLogo = bitmapLogo.copy(Bitmap.Config.ARGB_8888, true);
+
+            Canvas c = new Canvas(bmpBase);
+            int width = (int) bmpLogo.getWidth();
+            int height = (int) bmpLogo.getHeight();
+
+            c.drawBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_marker),
+                    0, 0, new Paint());
+
+            int centerWidth = (bmpBase.getWidth() - width) / 2;
+            int heightDelay = (bmpLogo.getHeight() / 3);
+            int centerHeight = ((bmpBase.getHeight() - height) / 2) - heightDelay;
+
+            c.drawBitmap(bitmapLogo, centerWidth, centerHeight, new Paint());
+        }
+
+        return bmpBase;
+    }
+
+    private Bitmap getImageBitmap(Context context, String name) {
+        Bitmap bitmap = null;
+
+        if (name.contains("ALCAMPO")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_alcampo);
+        } else if (name.contains("ANDAMUR")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_andamur);
+        } else if (name.contains("AVIA")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_avia);
+        } else if (name.contains("BALLENOIL")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_ballenoil);
+        } else if (name.contains("BP")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_bp);
+        } else if (name.contains("CAMPSA")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_campsa);
+        } else if (name.contains("CARREFOUR")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_carrefour);
+        } else if (name.contains("CEPSA")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_cepsa);
+        } else if (name.contains("EASYGAS")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_easygas);
+        } else if (name.contains("EROSKI")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_eroski);
+        } else if (name.contains("EUROCAM")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_eurocam);
+        } else if (name.contains("GALP")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_galp);
+        } else if (name.contains("PETRONOR")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_petronor);
+        } else if (name.contains("PLENOIL")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_plenoil);
+        } else if (name.contains("REPSOL")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_repsol);
+        } else if (name.contains("SARAS")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_saras);
+        } else if (name.contains("SHELL")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_shell);
+        }
+
+        return bitmap;
     }
 
     public interface View {

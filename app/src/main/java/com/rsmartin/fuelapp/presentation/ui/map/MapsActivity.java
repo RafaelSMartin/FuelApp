@@ -2,6 +2,7 @@ package com.rsmartin.fuelapp.presentation.ui.map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -347,16 +348,10 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
 
             marker.setTag(clusterItem);
             //Para pintar el item al final de la agrupacion de clustered de google
-//            ChargingSpotViewModel selected = getSelectedChargingSpotViewModel();
-//            if (selected == clusterItem) {
-//                marker.setIcon(BitmapDescriptorFactory
-//                        .fromResource(getSelectedMarkerResource(clusterItem.getStatus(),
-//                                clusterItem.isIndInteroperable())));
-//
-//            } else {
-            marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker));
-//            }
+            Bitmap bitmap = mapsPresenter.paintLogo(context, clusterItem.getRotulo());
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
         }
+
 
         @Override
         protected int getColor(int clusterSize) {

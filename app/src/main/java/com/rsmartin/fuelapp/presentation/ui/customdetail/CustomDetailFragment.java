@@ -66,7 +66,9 @@ public class CustomDetailFragment extends BottomSheetDialogFragment {
         if (args != null) {
             datosGasolinera = (DatosGasolinera) args.getSerializable(IExtras.EXTRAS_CUSTOM_DETAIL);
             if (datosGasolinera != null) {
-                detailTitleImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_logo_fuelapp_white));
+                if (datosGasolinera.getRotulo().contains("REPSOL")) {
+                    detailTitleImage.setImageDrawable(getResources().getDrawable(R.drawable.marker_repsol));
+                }
                 detailTitle.setText(datosGasolinera.getRotulo().trim());
                 Double currentLat = args.getDouble(IExtras.CURRENT_LAT);
                 Double currentLong = args.getDouble(IExtras.CURRENT_LONG);
