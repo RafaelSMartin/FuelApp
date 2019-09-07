@@ -1,10 +1,20 @@
 package com.rsmartin.fuelapp.presentation.ui.map;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.widget.FrameLayout;
+
+import androidx.transition.Slide;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
@@ -69,6 +79,27 @@ public class MapsPresenter extends AbstractPresenter<MapsPresenter.View> {
         SharedPref.getInstance().removePreference(IExtras.USER_PHOTO_URL);
         SharedPref.getInstance().removePreference(IExtras.USER_EMAIL_VERIFIED);
         SharedPref.getInstance().removePreference(IExtras.USER_UID);
+    }
+
+    public void toggle(FrameLayout view, boolean visibility, int idTarget) {
+        Transition transition = new Slide();
+        transition.setDuration(300);
+        transition.addTarget(idTarget);
+
+        TransitionManager.beginDelayedTransition(view, transition);
+        view.setVisibility(visibility ? android.view.View.VISIBLE : android.view.View.GONE);
+    }
+
+    public LatLng getMyCurrentLocation(Context context) {
+        LocationManager locationManager = (LocationManager)
+                context.getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        @SuppressLint("MissingPermission")
+        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        return new LatLng(latitude, longitude);
     }
 
     public interface View {

@@ -234,7 +234,7 @@ public class DatosGasolinera implements ClusterItem, Serializable {
 
     @Override
     public String getTitle() {
-        return rotulo;
+        return null;
     }
 
     @Override

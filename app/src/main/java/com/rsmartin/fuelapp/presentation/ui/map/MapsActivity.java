@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
@@ -48,6 +50,7 @@ import com.rsmartin.fuelapp.domain.model.ListaDatosGasolineras;
 import com.rsmartin.fuelapp.presentation.internal.android.SharedPref;
 import com.rsmartin.fuelapp.presentation.internal.room.database.AppDB;
 import com.rsmartin.fuelapp.presentation.ui.AbstractFragmentActivity;
+import com.rsmartin.fuelapp.presentation.ui.customdetail.CustomDetailFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,13 +62,16 @@ import butterknife.ButterKnife;
 
 public class MapsActivity extends AbstractFragmentActivity implements MapsPresenter.View,
         NavigationView.OnNavigationItemSelectedListener, GoogleMap.OnMarkerClickListener,
-        OnMapReadyCallback {
+        OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
+
+    @BindView(R.id.custom_detail)
+    FrameLayout customDetail;
 
     @Inject
     MapsPresenter mapsPresenter;
@@ -100,7 +106,9 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
     }
 
     private void initToolbar() {
@@ -191,15 +199,6 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         return true;
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -207,6 +206,8 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         mMap.getUiSettings().isCompassEnabled();
         mMap.getUiSettings().isZoomControlsEnabled();
         mMap.setMyLocationEnabled(true);
+        mMap.setOnMarkerClickListener(this);
+        mMap.setOnMapClickListener(this);
 
 //        DisplayMetrics metrics = new DisplayMetrics();
 //        getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -244,11 +245,30 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
 
         DatosGasolinera tag = (DatosGasolinera) marker.getTag();
         if (tag != null) {
-            String municipio = tag.getMunicipio() != null ? tag.getMunicipio() : "";
-            Toast.makeText(this, marker.getTitle() + " has been clicked en " + municipio, Toast.LENGTH_SHORT).show();
+//            String municipio = tag.getMunicipio() != null ? tag.getMunicipio() : "";
+//            Toast.makeText(this, marker.getTitle() + " has been clicked en " + municipio, Toast.LENGTH_SHORT).show();
+            openDetail(tag);
         }
 
         return mapsPresenter.zoomInCluster(mMap, marker, mClusterManager);
+    }
+
+    private void openDetail(DatosGasolinera datosGasolinera) {
+        LatLng currentLatLong = mapsPresenter.getMyCurrentLocation(context);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.custom_detail, CustomDetailFragment.newInstance(datosGasolinera,
+                        currentLatLong.latitude, currentLatLong.longitude))
+                .commit();
+
+        mapsPresenter.toggle(customDetail, true, R.id.custom_detail);
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        if (customDetail.getVisibility() == View.VISIBLE) {
+            mapsPresenter.toggle(customDetail, false, R.id.custom_detail);
+        }
     }
 
     private GoogleMap getMap() {

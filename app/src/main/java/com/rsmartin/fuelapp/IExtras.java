@@ -15,4 +15,8 @@ public interface IExtras {
     String USER_PHOTO_URL = "userPhotoUrl";
     String USER_EMAIL_VERIFIED = "userEmailVerified";
     String USER_UID = "uid";
+
+    String EXTRAS_CUSTOM_DETAIL = "extrasCustomDetail";
+    String CURRENT_LAT = "CurrentLat";
+    String CURRENT_LONG = "CurrentLong";
 }
