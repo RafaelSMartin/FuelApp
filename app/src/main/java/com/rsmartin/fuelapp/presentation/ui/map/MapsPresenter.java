@@ -16,8 +16,6 @@ import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.Cluster;
@@ -47,21 +45,6 @@ public class MapsPresenter extends AbstractPresenter<MapsPresenter.View> {
         sendIntent.setType("text/plain");
         sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(sendIntent);
-    }
-
-    public boolean zoomInCluster(GoogleMap mMap, Marker marker, ClusterManager<DatosGasolinera> mClusterManager) {
-        if (isClusterMarker(marker, mClusterManager)) {
-            float currentZoom = mMap.getCameraPosition().zoom;
-            int increment = 3;
-            if (currentZoom + increment <= mMap.getMaxZoomLevel()) {
-                currentZoom = currentZoom + increment;
-            } else {
-                currentZoom = mMap.getMinZoomLevel();
-            }
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), currentZoom));
-            return true;
-        }
-        return false;
     }
 
     public boolean isClusterMarker(Marker marker, ClusterManager<DatosGasolinera> mClusterManager) {
@@ -107,18 +90,18 @@ public class MapsPresenter extends AbstractPresenter<MapsPresenter.View> {
 
     public Bitmap paintLogo(Context context, String name) {
         Bitmap bitmapBase = BitmapFactory.decodeResource(
-                context.getResources(), R.drawable.ic_marker);
-        Bitmap bmpBase = bitmapBase.copy(Bitmap.Config.ARGB_8888, true);
+                context.getResources(), R.drawable.ic_marker_low);
+        Bitmap bmpBase = bitmapBase.copy(Bitmap.Config.ARGB_4444, true);
 
         Bitmap bitmapLogo = getImageBitmap(context, name);
         if (bitmapLogo != null) {
-            Bitmap bmpLogo = bitmapLogo.copy(Bitmap.Config.ARGB_8888, true);
+            Bitmap bmpLogo = bitmapLogo.copy(Bitmap.Config.ARGB_4444, true);
 
             Canvas c = new Canvas(bmpBase);
             int width = (int) bmpLogo.getWidth();
             int height = (int) bmpLogo.getHeight();
 
-            c.drawBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_marker),
+            c.drawBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_marker_low),
                     0, 0, new Paint());
 
             int centerWidth = (bmpBase.getWidth() - width) / 2;

@@ -26,6 +26,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -82,6 +83,7 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
     private List<DatosGasolinera> listOils = new ArrayList<>();
     private Context context;
     private FirebaseUser user;
+    private boolean isAnimationFinished;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,17 +243,44 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        isAnimationFinished = false;
         // Retrieve the data from the marker.
         // Check if a click count was set, then display the click count.
-
         DatosGasolinera tag = (DatosGasolinera) marker.getTag();
+
         if (tag != null) {
 //            String municipio = tag.getMunicipio() != null ? tag.getMunicipio() : "";
 //            Toast.makeText(this, marker.getTitle() + " has been clicked en " + municipio, Toast.LENGTH_SHORT).show();
             openDetail(tag);
         }
 
-        return mapsPresenter.zoomInCluster(mMap, marker, mClusterManager);
+        return zoomInCluster(mMap, marker, mClusterManager);
+    }
+
+    public boolean zoomInCluster(GoogleMap mMap, Marker marker, ClusterManager<DatosGasolinera> mClusterManager) {
+        if (mapsPresenter.isClusterMarker(marker, mClusterManager)) {
+            float currentZoom = mMap.getCameraPosition().zoom;
+            int increment = 3;
+            if (currentZoom + increment <= mMap.getMaxZoomLevel()) {
+                currentZoom = currentZoom + increment;
+            } else {
+                currentZoom = mMap.getMinZoomLevel();
+            }
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), currentZoom),
+                    new GoogleMap.CancelableCallback() {
+                        @Override
+                        public void onFinish() {
+                            isAnimationFinished = true;
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            isAnimationFinished = true;
+                        }
+                    });
+            return !isAnimationFinished;
+        }
+        return false;
     }
 
     private void openDetail(DatosGasolinera datosGasolinera) {
@@ -338,7 +367,6 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
                 descriptor = BitmapDescriptorFactory.fromBitmap(this.mIconGenerator.makeIcon(this.getClusterText(bucket)));
                 this.mIcons.put(bucket, descriptor);
             }
-
             markerOptions.icon(descriptor);
         }
 
@@ -348,8 +376,10 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
 
             marker.setTag(clusterItem);
             //Para pintar el item al final de la agrupacion de clustered de google
+//            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_low));
             Bitmap bitmap = mapsPresenter.paintLogo(context, clusterItem.getRotulo());
             marker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
+
         }
 
 
