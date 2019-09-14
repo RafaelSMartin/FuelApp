@@ -112,12 +112,11 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
             tvResponse.setText("Cargando desde BBDD");
             FindAllListaPrecioWraperTask findAllListaPrecioWraperTask = new FindAllListaPrecioWraperTask();
             findAllListaPrecioWraperTask.execute();
-//            showResultFromRoom(null);
         }
     }
 
     private long now() {
-        return SystemClock.uptimeMillis();//El tiempo actual
+        return SystemClock.uptimeMillis();
     }
 
     public boolean shouldFetch() {
@@ -129,7 +128,7 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
             return true;
         }
 
-        long timeout = TimeUnit.SECONDS.toMillis(20);
+        long timeout = TimeUnit.HOURS.toMillis(24);
         if (now - lastFetched > timeout) {
             SharedPref.getInstance().saveLongPreferences(IExtras.UPDATE_DB, now);
             return true;

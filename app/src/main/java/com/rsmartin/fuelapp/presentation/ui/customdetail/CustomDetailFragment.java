@@ -1,5 +1,6 @@
 package com.rsmartin.fuelapp.presentation.ui.customdetail;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +10,20 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.rsmartin.fuelapp.IExtras;
 import com.rsmartin.fuelapp.R;
 import com.rsmartin.fuelapp.domain.model.DatosGasolinera;
+import com.rsmartin.fuelapp.presentation.ui.AbstractFragment;
 import com.rsmartin.fuelapp.utils.Utils;
 
 import java.text.DecimalFormat;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CustomDetailFragment extends BottomSheetDialogFragment {
+public class CustomDetailFragment extends AbstractFragment implements CustomDetailPresenter.View {
 
 //    private Listener mListener;
 
@@ -42,7 +45,11 @@ public class CustomDetailFragment extends BottomSheetDialogFragment {
     @BindView(R.id.detail_prices)
     TextView detailPrices;
 
+    @Inject
+    CustomDetailPresenter customDetailPresenter;
+
     private DatosGasolinera datosGasolinera;
+    private Context context;
 
     public static CustomDetailFragment newInstance(DatosGasolinera datosGasolinera,
                                                    double currentLat, double currentLong) {
@@ -55,6 +62,12 @@ public class CustomDetailFragment extends BottomSheetDialogFragment {
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = CustomDetailFragment.this.getContext();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -62,13 +75,17 @@ public class CustomDetailFragment extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.custom_detail, container, false);
         ButterKnife.bind(this, view);
 
+        ((AbstractFragment) this).getApplicationComponent().inject(this);
+        customDetailPresenter.setView(this);
+
         Bundle args = getArguments();
         if (args != null) {
             datosGasolinera = (DatosGasolinera) args.getSerializable(IExtras.EXTRAS_CUSTOM_DETAIL);
             if (datosGasolinera != null) {
-                if (datosGasolinera.getRotulo().contains("REPSOL")) {
-                    detailTitleImage.setImageDrawable(getResources().getDrawable(R.drawable.marker_repsol));
-                }
+
+                detailTitleImage.setImageDrawable(customDetailPresenter.mapIconOils(context,
+                        datosGasolinera.getRotulo().toString().trim()));
+
                 detailTitle.setText(datosGasolinera.getRotulo().trim());
                 Double currentLat = args.getDouble(IExtras.CURRENT_LAT);
                 Double currentLong = args.getDouble(IExtras.CURRENT_LONG);
@@ -81,7 +98,9 @@ public class CustomDetailFragment extends BottomSheetDialogFragment {
                     detailDistance.setText(distanceFormatted + " Km.");
                 }
                 detailHorary.setText(datosGasolinera.getHorary().trim());
-                String addressCompleted = datosGasolinera.getAddress() + " " + datosGasolinera.getProvincia() + ", " + datosGasolinera.getMunicipio();
+                String addressCompleted = datosGasolinera.getAddress().toString().trim() + "\n" +
+                        datosGasolinera.getProvincia().toString().trim() + ", " +
+                        datosGasolinera.getMunicipio().toString().trim();
                 detailAddress.setText(addressCompleted);
                 String allPrices = new StringBuilder()
                         .append("\n").append("Gasolina 95: " + datosGasolinera.getPrecioGasolina95Proteccion())
