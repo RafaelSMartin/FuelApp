@@ -284,7 +284,7 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
     }
 
     private void openDetail(DatosGasolinera datosGasolinera) {
-        LatLng currentLatLong = mapsPresenter.getMyCurrentLocation(context);
+        LatLng currentLatLong = mapsPresenter.getMyCurrentLocation(MapsActivity.this);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.custom_detail, CustomDetailFragment.newInstance(datosGasolinera,

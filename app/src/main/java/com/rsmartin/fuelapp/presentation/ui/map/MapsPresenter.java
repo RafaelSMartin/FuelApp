@@ -1,23 +1,25 @@
 package com.rsmartin.fuelapp.presentation.ui.map;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.widget.FrameLayout;
 
 import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
@@ -31,6 +33,9 @@ import com.rsmartin.fuelapp.presentation.ui.AbstractPresenter;
 import javax.inject.Inject;
 
 public class MapsPresenter extends AbstractPresenter<MapsPresenter.View> {
+
+    private double currentLat;
+    private double currentLon;
 
     @Inject
     public MapsPresenter(ErrorHandler errorHandler) {
@@ -79,13 +84,23 @@ public class MapsPresenter extends AbstractPresenter<MapsPresenter.View> {
     }
 
     @SuppressLint("MissingPermission")
-    public LatLng getMyCurrentLocation(Context context) {
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        return new LatLng(latitude, longitude);
+    public LatLng getMyCurrentLocation(Activity activity) {
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(activity, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            currentLat = location.getLatitude();
+                            currentLon = location.getLongitude();
+                            SharedPref.getInstance().saveLongPreferences(IExtras.CURRENT_LAT, Double.valueOf(location.getLatitude()).longValue());
+                            SharedPref.getInstance().saveLongPreferences(IExtras.CURRENT_LONG, Double.valueOf(location.getLongitude()).longValue());
+                        }
+                    }
+                });
+
+
+        return new LatLng(currentLat, currentLon);
     }
 
     public Bitmap paintLogo(Context context, String name) {

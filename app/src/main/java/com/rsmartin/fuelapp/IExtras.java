@@ -21,4 +21,8 @@ public interface IExtras {
     String EXTRAS_CUSTOM_DETAIL = "extrasCustomDetail";
     String CURRENT_LAT = "CurrentLat";
     String CURRENT_LONG = "CurrentLong";
+
+    String ID_BANNER_APLICATION = "ca-app-pub-5611794729293328~7804426188";
+    String ID_BANNER = "ca-app-pub-5611794729293328/8211620290";
+    String ID_BANNER_TEST = "ca-app-pub-3940256099942544/6300978111";
 }

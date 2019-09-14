@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.rsmartin.fuelapp.R;
@@ -30,8 +33,11 @@ public class LoginActivity extends AbstractActivity implements LoginPresenter.Vi
     @BindView(R.id.login)
     Button login;
 
-    @BindView(R.id.create)
-    Button create;
+    @BindView(R.id.register)
+    TextView register;
+
+    @BindView(R.id.forgot_pass)
+    TextView forgot;
 
     @BindView(R.id.verification)
     Button verification;
@@ -54,6 +60,8 @@ public class LoginActivity extends AbstractActivity implements LoginPresenter.Vi
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //updateUI(currentUser);
 
+        initAdView();
+
         email.setText("rafaels.martin.dev@gmail.com");
         pass.setText("12345678");
 
@@ -65,7 +73,17 @@ public class LoginActivity extends AbstractActivity implements LoginPresenter.Vi
             }
         });
 
-        create.setOnClickListener(new View.OnClickListener() {
+        forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ForgotPasswordDialogFragment forgotPasswordDialogFragment = new ForgotPasswordDialogFragment();
+                forgotPasswordDialogFragment.show(getSupportFragmentManager(), "ForgotPasswordDialogFragment");
+//                String newPass = "";
+//                loginPresenter.updatePassword(newPass);
+            }
+        });
+
+        register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loginPresenter.singUpNewUsers(getApplicationContext(),
@@ -79,6 +97,14 @@ public class LoginActivity extends AbstractActivity implements LoginPresenter.Vi
                 loginPresenter.sendUserVerification(getApplicationContext(), mAuth);
             }
         });
+    }
+
+    private void initAdView() {
+        AdView mAdView = findViewById(R.id.ad_view);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("8D10FA36EE0D8F85F9C7B1331F2F81D0")
+                .build();
+        mAdView.loadAd(adRequest);
     }
 
 

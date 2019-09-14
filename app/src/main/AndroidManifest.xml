@@ -54,14 +54,15 @@
             android:label="@string/title_activity_maps" />
 
         <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/mi_admodAppId" />
+        <meta-data
             android:name="ADMOB_ALLOW_LOCATION_FOR_ADS"
             android:value="true" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/mi_admodAppId" />
+
     </application>
 
 

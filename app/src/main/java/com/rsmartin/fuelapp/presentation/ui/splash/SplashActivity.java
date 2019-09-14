@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
@@ -69,6 +70,8 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
         setContentView(R.layout.activity_splash_view);
         ButterKnife.bind(this);
 
+        initAdMob();
+
         getApplicationComponent().inject(this);
         splashPresenter.setView(this);
 
@@ -100,6 +103,10 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
                 .onSameThread()
                 .check();
 
+    }
+
+    private void initAdMob() {
+        MobileAds.initialize(this, IExtras.ID_BANNER_APLICATION);
     }
 
     private void getOils() {
@@ -146,6 +153,8 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
                 if (location != null) {
                     lastLocation = location;
                     currentLatLon = new LatLng(location.getLatitude(), location.getLongitude());
+                    SharedPref.getInstance().saveLongPreferences(IExtras.CURRENT_LAT, Double.valueOf(location.getLatitude()).longValue());
+                    SharedPref.getInstance().saveLongPreferences(IExtras.CURRENT_LONG, Double.valueOf(location.getLongitude()).longValue());
                 }
             }
         });
@@ -230,7 +239,7 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
 
             for (DatosGasolinera item : lists[0]) {
                 AppDB.getInstance(App.getInstance().getApplicationContext())
-                        .gasolinerasDAO().updatePreciosGasolinera(item);
+                        .gasolinerasDAO().insertPrecioGasolinera(item);
             }
             return null;
         }
