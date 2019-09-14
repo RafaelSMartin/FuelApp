@@ -5,7 +5,7 @@ import android.annotation.SuppressLint;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -37,6 +37,7 @@ import com.rsmartin.fuelapp.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -102,16 +103,39 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
     }
 
     private void getOils() {
-        if (!SharedPref.getInstance().getBooleanPreferences(IExtras.IS_NOT_FIRST_TIME)) {
-            Log.e(TAG, "onCreate: Primera vez // Llama Retrofit");
-            SharedPref.getInstance().saveBooleanPreferences(IExtras.IS_NOT_FIRST_TIME, true);
+        boolean shouldFetch = shouldFetch();
+
+        if (shouldFetch) {
+            tvResponse.setText("Cargando desde internet");
             splashPresenter.getOils();
         } else {
-            Log.e(TAG, "onCreate: NO Primera vez // Llama Room");
+            tvResponse.setText("Cargando desde BBDD");
             FindAllListaPrecioWraperTask findAllListaPrecioWraperTask = new FindAllListaPrecioWraperTask();
             findAllListaPrecioWraperTask.execute();
 //            showResultFromRoom(null);
         }
+    }
+
+    private long now() {
+        return SystemClock.uptimeMillis();//El tiempo actual
+    }
+
+    public boolean shouldFetch() {
+        Long lastFetched = SharedPref.getInstance().getLongPreferences(IExtras.UPDATE_DB);
+        long now = now();
+
+        if (lastFetched == null || lastFetched == -1) {
+            SharedPref.getInstance().saveLongPreferences(IExtras.UPDATE_DB, now);
+            return true;
+        }
+
+        long timeout = TimeUnit.HOURS.toMillis(24);
+        if (now - lastFetched > timeout) {
+            SharedPref.getInstance().saveLongPreferences(IExtras.UPDATE_DB, now);
+            return true;
+        }
+
+        return false;
     }
 
     @SuppressLint("MissingPermission")
@@ -155,10 +179,9 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
 
         ListaDatosGasolineras listaDatosGasolinerasShort = new ListaDatosGasolineras(lista);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         tvResponse.setText("finalizado");
 
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             navigator.navigateToMaps(getApplicationContext(), listaDatosGasolinerasShort);
         } else {

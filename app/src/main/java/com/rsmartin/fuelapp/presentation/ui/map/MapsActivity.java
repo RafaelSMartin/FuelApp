@@ -229,8 +229,8 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         mMap.setOnMarkerClickListener(this);
     }
 
-    public void drawOils(List<DatosGasolinera> auxList) {
-        for (DatosGasolinera item : auxList) {
+    public void drawOils(List<DatosGasolinera> listOils) {
+        for (DatosGasolinera item : listOils) {
             mClusterManager.addItem(item);
             mClusterManager.cluster();
         }

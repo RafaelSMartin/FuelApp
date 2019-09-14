@@ -81,15 +81,15 @@ public class CustomDetailFragment extends BottomSheetDialogFragment {
                     detailDistance.setText(distanceFormatted + " Km.");
                 }
                 detailHorary.setText(datosGasolinera.getHorary().trim());
-                String addressCompleted = datosGasolinera.getAddress() + " " + datosGasolinera.getProvincia() + " " + datosGasolinera.getMunicipio();
+                String addressCompleted = datosGasolinera.getAddress() + " " + datosGasolinera.getProvincia() + ", " + datosGasolinera.getMunicipio();
                 detailAddress.setText(addressCompleted);
                 String allPrices = new StringBuilder()
-                        .append("\n").append(datosGasolinera.getPrecioGasolina95Proteccion())
-                        .append("\n").append(datosGasolinera.getPrecioGasolina98())
-                        .append("\n").append(datosGasolinera.getPrecioGasoleoA())
-                        .append("\n").append(datosGasolinera.getPrecioGasoleoB())
-                        .append("\n").append(datosGasolinera.getPrecioNuevoGasoleoA())
-                        .append("\n").append(datosGasolinera.getPrecioBiodiesel())
+                        .append("\n").append("Gasolina 95: " + datosGasolinera.getPrecioGasolina95Proteccion())
+                        .append("\n").append("Gasolina 98: " + datosGasolinera.getPrecioGasolina98())
+                        .append("\n").append("Gasoleo A: " + datosGasolinera.getPrecioGasoleoA())
+                        .append("\n").append("Gasoleo B: " + datosGasolinera.getPrecioGasoleoB())
+                        .append("\n").append("Nuevo Gasoleo A: " + datosGasolinera.getPrecioNuevoGasoleoA())
+                        .append("\n").append("Biodiesel: " + datosGasolinera.getPrecioBiodiesel())
                         .toString().trim();
                 detailPrices.setText(allPrices);
             }
