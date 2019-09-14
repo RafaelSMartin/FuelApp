@@ -47,6 +47,10 @@ public class SharedPref {
         return prefs.getBoolean(key, false);
     }
 
+    public boolean getBooleanPreferencesIsFristTime() {
+        return prefs.getBoolean(IExtras.IS_FIRST_TIME, true);
+    }
+
     public void saveIntPreferences(String key, int value){
         prefs.edit().putInt(key, value).apply();
     }

@@ -129,7 +129,7 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
             return true;
         }
 
-        long timeout = TimeUnit.HOURS.toMillis(24);
+        long timeout = TimeUnit.SECONDS.toMillis(20);
         if (now - lastFetched > timeout) {
             SharedPref.getInstance().saveLongPreferences(IExtras.UPDATE_DB, now);
             return true;
@@ -154,8 +154,18 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
 
     @Override
     public void showResult(ListaDatosGasolineras listaDatosGasolineras) {
-        InsertListaPrecioWraperTask insertListaPrecioWraperTask = new InsertListaPrecioWraperTask();
-        insertListaPrecioWraperTask.execute(listaDatosGasolineras.getDatosGasolineraList());
+        boolean isFirstTime = SharedPref.getInstance().getBooleanPreferencesIsFristTime();
+
+        if (isFirstTime) {
+            SharedPref.getInstance().saveBooleanPreferences(IExtras.IS_FIRST_TIME, false);
+            tvResponse.setText("Cargando desde BBDD Insertando");
+            InsertListaPrecioWraperTask insert = new InsertListaPrecioWraperTask();
+            insert.execute(listaDatosGasolineras.getDatosGasolineraList());
+        } else {
+            tvResponse.setText("Cargando desde BBDD Actualizando");
+            UpdateListaPrecioWraperTask update = new UpdateListaPrecioWraperTask();
+            update.execute(listaDatosGasolineras.getDatosGasolineraList());
+        }
 
         showResultFromRoom(listaDatosGasolineras);
     }
@@ -180,7 +190,6 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
         ListaDatosGasolineras listaDatosGasolinerasShort = new ListaDatosGasolineras(lista);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        tvResponse.setText("finalizado");
 
         if (user != null) {
             navigator.navigateToMaps(getApplicationContext(), listaDatosGasolinerasShort);
@@ -211,6 +220,18 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
             for (DatosGasolinera item : lists[0]) {
                 AppDB.getInstance(App.getInstance().getApplicationContext())
                         .gasolinerasDAO().insertPrecioGasolinera(item);
+            }
+            return null;
+        }
+    }
+
+    public class UpdateListaPrecioWraperTask extends AsyncTask<List<DatosGasolinera>, Void, Void> {
+        @Override
+        protected Void doInBackground(List<DatosGasolinera>... lists) {
+
+            for (DatosGasolinera item : lists[0]) {
+                AppDB.getInstance(App.getInstance().getApplicationContext())
+                        .gasolinerasDAO().updatePreciosGasolinera(item);
             }
             return null;
         }
