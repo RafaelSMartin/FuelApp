@@ -22,7 +22,6 @@ public class LoginPresenter extends AbstractPresenter<LoginPresenter.View> {
 
     private String TAG = "LoginPresenter";
 
-
     @Inject
     public LoginPresenter(ErrorHandler errorHandler) {
         super(errorHandler);
@@ -43,7 +42,7 @@ public class LoginPresenter extends AbstractPresenter<LoginPresenter.View> {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(context, "Authentication failed.",
+                            Toast.makeText(context, "Fallo en el registro",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
@@ -69,7 +68,7 @@ public class LoginPresenter extends AbstractPresenter<LoginPresenter.View> {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(context, "Authentication failed.",
+                            Toast.makeText(context, "Fallo en el login.",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
@@ -150,7 +149,7 @@ public class LoginPresenter extends AbstractPresenter<LoginPresenter.View> {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "Email sent.");
+                            Log.e(TAG, "Email sent.");
                         }
                     }
                 });

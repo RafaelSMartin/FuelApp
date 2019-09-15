@@ -1,10 +1,12 @@
 package com.rsmartin.fuelapp.presentation.ui.login;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -18,7 +20,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AbstractActivity implements LoginPresenter.View {
+public class LoginActivity extends AbstractActivity implements LoginPresenter.View, ForgotPasswordDialogFragment.ForgotPasswordListener {
 
     private String TAG = "LoginActivity";
 
@@ -63,7 +65,7 @@ public class LoginActivity extends AbstractActivity implements LoginPresenter.Vi
         initAdView();
 
         email.setText("rafaels.martin.dev@gmail.com");
-        pass.setText("12345678");
+        pass.setText("123456");
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,8 +80,7 @@ public class LoginActivity extends AbstractActivity implements LoginPresenter.Vi
             public void onClick(View view) {
                 ForgotPasswordDialogFragment forgotPasswordDialogFragment = new ForgotPasswordDialogFragment();
                 forgotPasswordDialogFragment.show(getSupportFragmentManager(), "ForgotPasswordDialogFragment");
-//                String newPass = "";
-//                loginPresenter.updatePassword(newPass);
+//
             }
         });
 
@@ -111,5 +112,12 @@ public class LoginActivity extends AbstractActivity implements LoginPresenter.Vi
     @Override
     public void goToSplash() {
         navigator.navigateToSplash(getApplicationContext());
+    }
+
+    @Override
+    public void onDialogPositive(String email) {
+        Toast.makeText(LoginActivity.this, "listener en activity: " + email, Toast.LENGTH_SHORT).show();
+        Log.e(TAG, "onDialogPositive: " + email);
+        loginPresenter.sendPasswordResetEmail(email);
     }
 }
