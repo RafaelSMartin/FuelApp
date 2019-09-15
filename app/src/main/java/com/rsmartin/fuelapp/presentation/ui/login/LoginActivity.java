@@ -5,8 +5,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -25,6 +29,12 @@ public class LoginActivity extends AbstractActivity implements LoginPresenter.Vi
     private String TAG = "LoginActivity";
 
     private FirebaseAuth mAuth;
+
+    @BindView(R.id.container_login)
+    ConstraintLayout containerLogin;
+
+    @BindView(R.id.container_register)
+    FrameLayout containerRegister;
 
     @BindView(R.id.email)
     EditText email;
@@ -53,6 +63,9 @@ public class LoginActivity extends AbstractActivity implements LoginPresenter.Vi
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        containerLogin.setVisibility(View.VISIBLE);
+        containerRegister.setVisibility(View.GONE);
+
         getApplicationComponent().inject(this);
         loginPresenter.setView(this);
 
@@ -79,16 +92,23 @@ public class LoginActivity extends AbstractActivity implements LoginPresenter.Vi
             @Override
             public void onClick(View view) {
                 ForgotPasswordDialogFragment forgotPasswordDialogFragment = new ForgotPasswordDialogFragment();
-                forgotPasswordDialogFragment.show(getSupportFragmentManager(), "ForgotPasswordDialogFragment");
-//
+                forgotPasswordDialogFragment.show(getSupportFragmentManager(), ForgotPasswordDialogFragment.TAG);//
             }
         });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginPresenter.singUpNewUsers(getApplicationContext(),
-                        email.getText().toString().trim(), pass.getText().toString().trim(), mAuth);
+//                loginPresenter.singUpNewUsers(getApplicationContext(),
+//                        email.getText().toString().trim(), pass.getText().toString().trim(), mAuth);
+                containerLogin.setVisibility(View.GONE);
+                containerRegister.setVisibility(View.VISIBLE);
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container_register, RegisterFragment.newInstance(), RegisterFragment.TAG)
+                        .addToBackStack(RegisterFragment.TAG)
+                        .commit();
+
             }
         });
 
@@ -120,4 +140,16 @@ public class LoginActivity extends AbstractActivity implements LoginPresenter.Vi
         Log.e(TAG, "onDialogPositive: " + email);
         loginPresenter.sendPasswordResetEmail(email);
     }
+
+    @Override
+    public void onBackPressed() {
+        Fragment current = getSupportFragmentManager().findFragmentByTag(RegisterFragment.TAG);
+        if (current instanceof RegisterFragment) {
+            containerLogin.setVisibility(View.VISIBLE);
+            containerRegister.setVisibility(View.GONE);
+            Log.e(TAG, "onBackPressed: if");
+        }
+        super.onBackPressed();
+    }
+
 }

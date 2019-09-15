@@ -15,6 +15,8 @@ import com.rsmartin.fuelapp.R;
 
 public class ForgotPasswordDialogFragment extends DialogFragment {
 
+    public static final String TAG = "ForgotPasswordDialogFragment";
+
     ForgotPasswordListener listener;
 
     @Override
@@ -44,6 +46,12 @@ public class ForgotPasswordDialogFragment extends DialogFragment {
             throw new ClassCastException(getActivity().toString()
                     + " must implement ForgotPasswordDialogFragment");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
     }
 
     public interface ForgotPasswordListener {
