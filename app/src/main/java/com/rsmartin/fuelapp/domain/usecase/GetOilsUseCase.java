@@ -6,6 +6,8 @@ import com.rsmartin.fuelapp.domain.executor.UseCaseCallbackHandler;
 import com.rsmartin.fuelapp.domain.model.ListaDatosGasolineras;
 import com.rsmartin.fuelapp.domain.repository.OilsRepository;
 
+import java.util.Collections;
+
 import javax.inject.Inject;
 
 public class GetOilsUseCase extends UseCase<ListaDatosGasolineras> {
@@ -27,6 +29,7 @@ public class GetOilsUseCase extends UseCase<ListaDatosGasolineras> {
 
         try {
             ListaDatosGasolineras listaDatosGasolineras = oilsRepository.getListOils();
+            Collections.sort(listaDatosGasolineras.getDatosGasolineraList());
             notifyResult(listaDatosGasolineras);
 
         } catch (AppException appException) {

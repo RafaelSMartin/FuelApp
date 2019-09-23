@@ -188,8 +188,8 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
             if (item.getLat() != null && item.getLon() != null) {
                 isDistanceMinima = Utils.distance(currentLatLon.latitude, currentLatLon.longitude,
                         Utils.replaceComaToDot(item.getLat()), Utils.replaceComaToDot(item.getLon()))
-                        <= 125;
-                if (isDistanceMinima) {
+                        <= 50;
+                if (isDistanceMinima && lista.size() < 300) {
                     lista.add(item);
                 }
             }
@@ -239,7 +239,7 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
 
             for (DatosGasolinera item : lists[0]) {
                 AppDB.getInstance(App.getInstance().getApplicationContext())
-                        .gasolinerasDAO().insertPrecioGasolinera(item);
+                        .gasolinerasDAO().updatePreciosGasolinera(item);
             }
             return null;
         }

@@ -53,6 +53,7 @@ import com.rsmartin.fuelapp.presentation.internal.android.SharedPref;
 import com.rsmartin.fuelapp.presentation.internal.room.database.AppDB;
 import com.rsmartin.fuelapp.presentation.ui.AbstractFragmentActivity;
 import com.rsmartin.fuelapp.presentation.ui.customdetail.CustomDetailFragment;
+import com.rsmartin.fuelapp.utils.RateMyApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +113,7 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
+        new RateMyApp(MapsActivity.this).app_launched();
     }
 
     private void initToolbar() {
@@ -230,6 +232,7 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
     }
 
     public void drawOils(List<DatosGasolinera> listOils) {
+        mClusterManager.clearItems();
         for (DatosGasolinera item : listOils) {
             mClusterManager.addItem(item);
             mClusterManager.cluster();

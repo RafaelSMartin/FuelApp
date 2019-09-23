@@ -14,7 +14,7 @@ import java.util.Objects;
 import static com.rsmartin.fuelapp.utils.Utils.replaceComaToDot;
 
 @Entity(tableName = IExtras.NAME_TABLE)
-public class DatosGasolinera implements ClusterItem, Serializable {
+public class DatosGasolinera implements ClusterItem, Serializable, Comparable<DatosGasolinera> {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
@@ -240,5 +240,17 @@ public class DatosGasolinera implements ClusterItem, Serializable {
     @Override
     public String getSnippet() {
         return null;
+    }
+
+
+    @Override
+    public int compareTo(DatosGasolinera o) {
+        int result = 0;
+
+        if (rotulo.trim().equals(o.rotulo.trim())) {
+            result = 1;
+        }
+
+        return result;
     }
 }

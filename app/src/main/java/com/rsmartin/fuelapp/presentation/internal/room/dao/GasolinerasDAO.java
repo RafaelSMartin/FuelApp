@@ -2,6 +2,7 @@ package com.rsmartin.fuelapp.presentation.internal.room.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -15,10 +16,13 @@ public interface GasolinerasDAO {
     @Insert
     void insertPrecioGasolinera(DatosGasolinera datosGasolinera);
 
-    @Query("SELECT * FROM fuelapp")
+    @Query("SELECT * FROM fuelapp ")
     List<DatosGasolinera> findAllPreciosGasolineras();
 
-    @Update
+    @Query("DELETE FROM fuelapp")
+    void deleteAllPreciosGasolineras();
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     void updatePreciosGasolinera(DatosGasolinera datosGasolinera);
 
 
