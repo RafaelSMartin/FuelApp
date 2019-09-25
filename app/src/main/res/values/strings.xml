@@ -12,6 +12,7 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_favoritos">Favoritos</string>
     <string name="menu_preferencias">Preferencias</string>
+    <string name="menu_listado">Listado</string>
     <string name="menu_share">Compartir FuelApp</string>
     <string name="menu_send">Send</string>
 
@@ -31,4 +32,5 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_lista">ListaActivity</string>
 </resources>

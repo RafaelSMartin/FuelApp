@@ -90,12 +90,13 @@ public class RateMyApp {
                     editor.apply();
                 }
 
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/html");
-                intent.putExtra(Intent.EXTRA_EMAIL, "rafaels.martin.dev@gmail.com");
-                intent.putExtra(Intent.EXTRA_SUBJECT, "FuelApp: ");
+                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", "rafaels.martin.dev@gmail.com", null));
+                intent.putExtra(Intent.EXTRA_SUBJECT, "FuelApp");
                 intent.putExtra(Intent.EXTRA_TEXT, "Contactar con el autor");
-                callerActivity.startActivity(Intent.createChooser(intent, "Enviar Email"));
+                if (intent.resolveActivity(callerActivity.getPackageManager()) != null) {
+                    callerActivity.startActivity(Intent.createChooser(intent, "Enviar Email"));
+                }
                 ratemyappDialog.dismiss();
             }
         });

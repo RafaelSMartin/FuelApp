@@ -2,6 +2,7 @@ package com.rsmartin.fuelapp.presentation.ui.map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -53,6 +54,7 @@ import com.rsmartin.fuelapp.presentation.internal.android.SharedPref;
 import com.rsmartin.fuelapp.presentation.internal.room.database.AppDB;
 import com.rsmartin.fuelapp.presentation.ui.AbstractFragmentActivity;
 import com.rsmartin.fuelapp.presentation.ui.customdetail.CustomDetailFragment;
+import com.rsmartin.fuelapp.presentation.ui.lista.ListaActivity;
 import com.rsmartin.fuelapp.utils.RateMyApp;
 
 import java.util.ArrayList;
@@ -118,7 +120,7 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
 
     private void initToolbar() {
 //        setSupportActionBar(toolbar);
-        toolbar = findViewById(R.id.toolbar);
+//        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
     }
 
@@ -187,16 +189,25 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         switch (item.getItemId()) {
             case R.id.nav_map:
                 break;
-            case R.id.nav_gallery:
-                break;
             case R.id.nav_favoritos:
                 break;
-            case R.id.nav_preferencias:
+            case R.id.nav_listado:
+                LatLng currentLatLong = mapsPresenter.getMyCurrentLocation(MapsActivity.this);
+
+                Intent i = new Intent(this, ListaActivity.class);
+                final Bundle bundle = new Bundle();
+                ListaDatosGasolineras listaDatosGasolineras = new ListaDatosGasolineras(listOils);
+                bundle.putSerializable(IExtras.EXTRAS_LISTA_GAS, listaDatosGasolineras);
+                bundle.putDouble(IExtras.CURRENT_LAT, currentLatLong.latitude);
+                bundle.putDouble(IExtras.CURRENT_LONG, currentLatLong.longitude);
+                i.putExtras(bundle);
+                startActivity(i);
                 break;
             case R.id.nav_share:
                 mapsPresenter.shareApp(context);
                 break;
             case R.id.nav_send:
+                mapsPresenter.sendEmail(MapsActivity.this);
                 break;
         }
 
@@ -384,7 +395,6 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
             marker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
 
         }
-
 
         @Override
         protected int getColor(int clusterSize) {

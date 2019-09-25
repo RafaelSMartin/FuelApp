@@ -245,12 +245,6 @@ public class DatosGasolinera implements ClusterItem, Serializable, Comparable<Da
 
     @Override
     public int compareTo(DatosGasolinera o) {
-        int result = 0;
-
-        if (rotulo.trim().equals(o.rotulo.trim())) {
-            result = 1;
-        }
-
-        return result;
+        return rotulo.trim().compareTo(o.rotulo.trim());
     }
 }

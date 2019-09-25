@@ -9,17 +9,13 @@
             android:icon="@android:drawable/ic_dialog_map"
             android:title="@string/menu_map" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
-        <item
             android:id="@+id/nav_favoritos"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_favorite"
             android:title="@string/menu_favoritos" />
         <item
-            android:id="@+id/nav_preferencias"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_preferencias" />
+            android:id="@+id/nav_listado"
+            android:icon="@drawable/ic_logo_fuelapp_white"
+            android:title="@string/menu_listado" />
     </group>
 
     <item android:title="Communicate">

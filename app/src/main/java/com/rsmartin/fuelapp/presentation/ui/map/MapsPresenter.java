@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.location.Location;
+import android.net.Uri;
 import android.widget.FrameLayout;
 
 import androidx.transition.Slide;
@@ -50,6 +51,16 @@ public class MapsPresenter extends AbstractPresenter<MapsPresenter.View> {
         sendIntent.setType("text/plain");
         sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(sendIntent);
+    }
+
+    public void sendEmail(Activity activity) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto", "rafaels.martin.dev@gmail.com", null));
+        intent.putExtra(Intent.EXTRA_SUBJECT, "FuelApp");
+        intent.putExtra(Intent.EXTRA_TEXT, "Contactar con el autor");
+        if (intent.resolveActivity(activity.getPackageManager()) != null) {
+            activity.startActivity(Intent.createChooser(intent, "Enviar Email"));
+        }
     }
 
     public boolean isClusterMarker(Marker marker, ClusterManager<DatosGasolinera> mClusterManager) {
