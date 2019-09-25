@@ -11,6 +11,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
@@ -190,18 +191,11 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
             case R.id.nav_map:
                 break;
             case R.id.nav_favoritos:
+                FindAllFavoritesWraperTask findAllFavoritesWraperTask = new FindAllFavoritesWraperTask();
+                findAllFavoritesWraperTask.execute();
                 break;
             case R.id.nav_listado:
-                LatLng currentLatLong = mapsPresenter.getMyCurrentLocation(MapsActivity.this);
-
-                Intent i = new Intent(this, ListaActivity.class);
-                final Bundle bundle = new Bundle();
-                ListaDatosGasolineras listaDatosGasolineras = new ListaDatosGasolineras(listOils);
-                bundle.putSerializable(IExtras.EXTRAS_LISTA_GAS, listaDatosGasolineras);
-                bundle.putDouble(IExtras.CURRENT_LAT, currentLatLong.latitude);
-                bundle.putDouble(IExtras.CURRENT_LONG, currentLatLong.longitude);
-                i.putExtras(bundle);
-                startActivity(i);
+                launchListaActivity(listOils);
                 break;
             case R.id.nav_share:
                 mapsPresenter.shareApp(context);
@@ -436,6 +430,35 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         protected void onPostExecute(List<DatosGasolinera> lists) {
             drawOils(lists);
         }
+    }
+
+    public class FindAllFavoritesWraperTask extends AsyncTask<Void, Void, List<DatosGasolinera>> {
+
+        @Override
+        protected List<DatosGasolinera> doInBackground(Void... voids) {
+            return AppDB.getInstance(App.getInstance().getApplicationContext())
+                    .gasolinerasDAO().findAllFavorites(true);
+        }
+        @Override
+        protected void onPostExecute(List<DatosGasolinera> lists) {
+            for (DatosGasolinera item : lists) {
+                Log.e("Favorites", "nav_favoritos: " + item.toString());
+            }
+            launchListaActivity(lists);
+        }
+    }
+
+    private void launchListaActivity(List<DatosGasolinera> listaGasolineras){
+        LatLng currentLatLong = mapsPresenter.getMyCurrentLocation(MapsActivity.this);
+
+        Intent i = new Intent(MapsActivity.this, ListaActivity.class);
+        final Bundle bundle = new Bundle();
+        ListaDatosGasolineras listaDatosGasolineras = new ListaDatosGasolineras(listaGasolineras);
+        bundle.putSerializable(IExtras.EXTRAS_LISTA_GAS, listaDatosGasolineras);
+        bundle.putDouble(IExtras.CURRENT_LAT, currentLatLong.latitude);
+        bundle.putDouble(IExtras.CURRENT_LONG, currentLatLong.longitude);
+        i.putExtras(bundle);
+        startActivity(i);
     }
 
 }

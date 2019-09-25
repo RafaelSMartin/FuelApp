@@ -1,6 +1,7 @@
 package com.rsmartin.fuelapp.presentation.ui.customdetail;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +11,17 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.rsmartin.fuelapp.App;
 import com.rsmartin.fuelapp.IExtras;
 import com.rsmartin.fuelapp.R;
 import com.rsmartin.fuelapp.domain.model.DatosGasolinera;
+import com.rsmartin.fuelapp.domain.model.ListaDatosGasolineras;
+import com.rsmartin.fuelapp.presentation.internal.room.database.AppDB;
 import com.rsmartin.fuelapp.presentation.ui.AbstractFragment;
 import com.rsmartin.fuelapp.utils.Utils;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -26,6 +31,9 @@ import butterknife.ButterKnife;
 public class CustomDetailFragment extends AbstractFragment implements CustomDetailPresenter.View {
 
 //    private Listener mListener;
+
+    @BindView(R.id.favorite)
+    ImageView detailFavorite;
 
     @BindView(R.id.detail_title_image)
     ImageView detailTitleImage;
@@ -111,31 +119,39 @@ public class CustomDetailFragment extends AbstractFragment implements CustomDeta
                         .append("\n").append("Biodiesel: " + datosGasolinera.getPrecioBiodiesel())
                         .toString().trim();
                 detailPrices.setText(allPrices);
+
+                boolean isFavorite = datosGasolinera.isFavorite();
+                int resource = isFavorite ? android.R.drawable.star_big_on : android.R.drawable.star_big_off;
+                detailFavorite.setImageResource(resource);
+
+                detailFavorite.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (isFavorite) {
+                            datosGasolinera.setFavorite(false);
+                            detailFavorite.setImageResource(android.R.drawable.star_big_off);
+                        } else {
+                            datosGasolinera.setFavorite(true);
+                            detailFavorite.setImageResource(android.R.drawable.star_big_on);
+                        }
+                        AddFavoriteWraperTask addFavoriteWraperTask = new AddFavoriteWraperTask();
+                        addFavoriteWraperTask.execute(datosGasolinera);
+                    }
+                });
+
             }
         }
         return view;
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        final Fragment parent = getParentFragment();
-//        if (parent != null) {
-//            mListener = (Listener) parent;
-//        } else {
-//            mListener = (Listener) context;
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        mListener = null;
-//        super.onDetach();
-//    }
-//
-//    public interface Listener {
-//        void oncustomDetailFragmentClicked(int position);
-//    }
+    private class AddFavoriteWraperTask extends AsyncTask<DatosGasolinera, Void, Void> {
+        @Override
+        protected Void doInBackground(DatosGasolinera... datosGasolineras) {
+            AppDB.getInstance(App.getInstance().getApplicationContext())
+                    .gasolinerasDAO().updatePreciosGasolinera(datosGasolineras[0]);
+            return null;
+        }
+    }
 
 
 }

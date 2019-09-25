@@ -61,6 +61,9 @@ public class DatosGasolinera implements ClusterItem, Serializable, Comparable<Da
     @ColumnInfo(name = "municipio")
     private String municipio;
 
+    @ColumnInfo(name = "favorite")
+    private boolean favorite = false;
+
     public int getId() {
         return id;
     }
@@ -179,6 +182,14 @@ public class DatosGasolinera implements ClusterItem, Serializable, Comparable<Da
 
     public void setPrecioNuevoGasoleoA(String precioNuevoGasoleoA) {
         this.precioNuevoGasoleoA = precioNuevoGasoleoA;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 
     @Override

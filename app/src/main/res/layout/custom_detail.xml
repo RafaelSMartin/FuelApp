@@ -8,6 +8,16 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/favorite"
+        android:layout_width="23dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@android:drawable/star_off"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
         android:id="@+id/detail_title_image"
         android:layout_width="36dp"
         android:layout_height="36dp"

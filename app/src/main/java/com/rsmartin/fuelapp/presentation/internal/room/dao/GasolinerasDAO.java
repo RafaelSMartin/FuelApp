@@ -22,8 +22,10 @@ public interface GasolinerasDAO {
     @Query("DELETE FROM fuelapp")
     void deleteAllPreciosGasolineras();
 
+    @Query("SELECT * FROM fuelapp WHERE favorite = :favorite")
+    List<DatosGasolinera> findAllFavorites(boolean favorite);
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updatePreciosGasolinera(DatosGasolinera datosGasolinera);
-
 
 }
