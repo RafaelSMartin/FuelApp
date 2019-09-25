@@ -38,14 +38,17 @@ public class ListaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista);
         ButterKnife.bind(this);
 
+        String titleScreen = getString(R.string.app_name);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             listaDatosGasolineras = (ListaDatosGasolineras) extras.getSerializable(IExtras.EXTRAS_LISTA_GAS);
             currentLat = extras.getDouble(IExtras.CURRENT_LAT);
             currentLon = extras.getDouble(IExtras.CURRENT_LONG);
+            titleScreen = extras.getString(IExtras.TITLE_LISTA_ACTIVITY);
         }
 
-        initToolbar();
+        initToolbar(titleScreen);
         initAdapter();
 
     }
@@ -72,10 +75,10 @@ public class ListaActivity extends AppCompatActivity {
         });
     }
 
-    private void initToolbar() {
+    private void initToolbar(String titleScreen) {
 //        setSupportActionBar(toolbar);
 //        toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.app_name);
+        toolbar.setTitle(titleScreen);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

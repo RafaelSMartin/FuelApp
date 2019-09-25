@@ -195,7 +195,7 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
                 findAllFavoritesWraperTask.execute();
                 break;
             case R.id.nav_listado:
-                launchListaActivity(listOils);
+                launchListaActivity(listOils, "Listado");
                 break;
             case R.id.nav_share:
                 mapsPresenter.shareApp(context);
@@ -444,11 +444,11 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
             for (DatosGasolinera item : lists) {
                 Log.e("Favorites", "nav_favoritos: " + item.toString());
             }
-            launchListaActivity(lists);
+            launchListaActivity(lists, "Favoritos");
         }
     }
 
-    private void launchListaActivity(List<DatosGasolinera> listaGasolineras){
+    private void launchListaActivity(List<DatosGasolinera> listaGasolineras, String titleListaActivity){
         LatLng currentLatLong = mapsPresenter.getMyCurrentLocation(MapsActivity.this);
 
         Intent i = new Intent(MapsActivity.this, ListaActivity.class);
@@ -457,6 +457,7 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         bundle.putSerializable(IExtras.EXTRAS_LISTA_GAS, listaDatosGasolineras);
         bundle.putDouble(IExtras.CURRENT_LAT, currentLatLong.latitude);
         bundle.putDouble(IExtras.CURRENT_LONG, currentLatLong.longitude);
+        bundle.putString(IExtras.TITLE_LISTA_ACTIVITY, titleListaActivity);
         i.putExtras(bundle);
         startActivity(i);
     }

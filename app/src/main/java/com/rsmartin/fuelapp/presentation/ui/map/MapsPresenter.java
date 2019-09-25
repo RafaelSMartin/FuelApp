@@ -145,6 +145,8 @@ public class MapsPresenter extends AbstractPresenter<MapsPresenter.View> {
 
         if (name.contains("ALCAMPO")) {
             bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_alcampo);
+        } else if (name.contains("AGLA")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_agla);
         } else if (name.contains("ANDAMUR")) {
             bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_andamur);
         } else if (name.contains("AVIA")) {

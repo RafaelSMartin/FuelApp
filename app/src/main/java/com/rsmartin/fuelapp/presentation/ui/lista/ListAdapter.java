@@ -111,6 +111,8 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         if (name.contains("ALCAMPO")) {
             resource = context.getResources().getDrawable(R.drawable.marker_alcampo);
+        } else if (name.contains("AGLA")) {
+            resource = context.getResources().getDrawable(R.drawable.marker_agla);
         } else if (name.contains("ANDAMUR")) {
             resource = context.getResources().getDrawable(R.drawable.marker_andamur);
         } else if (name.contains("AVIA")) {
