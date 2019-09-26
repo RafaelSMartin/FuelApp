@@ -121,7 +121,7 @@ public class CustomDetailFragment extends AbstractFragment implements CustomDeta
                 detailPrices.setText(allPrices);
 
                 boolean isFavorite = datosGasolinera.isFavorite();
-                int resource = isFavorite ? android.R.drawable.star_big_on : android.R.drawable.star_big_off;
+                int resource = isFavorite ? R.drawable.ic_favorite_on : R.drawable.ic_favorite_off;
                 detailFavorite.setImageResource(resource);
 
                 detailFavorite.setOnClickListener(new View.OnClickListener() {
@@ -129,10 +129,10 @@ public class CustomDetailFragment extends AbstractFragment implements CustomDeta
                     public void onClick(View v) {
                         if (isFavorite) {
                             datosGasolinera.setFavorite(false);
-                            detailFavorite.setImageResource(android.R.drawable.star_big_off);
+                            detailFavorite.setImageResource(R.drawable.ic_favorite_off);
                         } else {
                             datosGasolinera.setFavorite(true);
-                            detailFavorite.setImageResource(android.R.drawable.star_big_on);
+                            detailFavorite.setImageResource(R.drawable.ic_favorite_on);
                         }
                         AddFavoriteWraperTask addFavoriteWraperTask = new AddFavoriteWraperTask();
                         addFavoriteWraperTask.execute(datosGasolinera);

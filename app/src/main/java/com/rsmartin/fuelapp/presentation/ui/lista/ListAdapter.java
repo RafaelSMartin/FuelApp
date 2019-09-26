@@ -48,7 +48,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return new VHItem(vItem);
     }
 
-    private DatosGasolinera getItem(int position) {
+    public DatosGasolinera getItem(int position) {
         return model.get(position);
     }
 

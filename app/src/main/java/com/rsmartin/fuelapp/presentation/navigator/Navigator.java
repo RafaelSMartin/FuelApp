@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.rsmartin.fuelapp.IExtras;
+import com.rsmartin.fuelapp.domain.model.DatosGasolinera;
 import com.rsmartin.fuelapp.domain.model.ListaDatosGasolineras;
 import com.rsmartin.fuelapp.presentation.ui.login.LoginActivity;
 import com.rsmartin.fuelapp.presentation.ui.map.MapsActivity;
@@ -36,6 +37,15 @@ public class Navigator {
         context.startActivity(intentToLaunch);
     }
 
+    private void navigateTo(Context context, Class<? extends Activity> activity, DatosGasolinera datosGasolinera) {
+        Intent intentToLaunch = new Intent(context, activity);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(IExtras.ARGS_DATOS_GASOL, datosGasolinera);
+        intentToLaunch.putExtras(bundle);
+        intentToLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intentToLaunch);
+    }
+
     public void navigateToSplash(Context context) {
         navigateTo(context, SplashActivity.class);
     }
@@ -50,6 +60,10 @@ public class Navigator {
 
     public void navigateToMaps(Context context, ListaDatosGasolineras listaDatosGasolinerasShort) {
         navigateTo(context, MapsActivity.class, listaDatosGasolinerasShort);
+    }
+
+    public void navigateToMaps(Context context, DatosGasolinera datosGasolinera) {
+        navigateTo(context, MapsActivity.class, datosGasolinera);
     }
 
 

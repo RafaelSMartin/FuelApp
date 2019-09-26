@@ -1,6 +1,7 @@
 package com.rsmartin.fuelapp.presentation.ui.lista;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,17 +10,21 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.rsmartin.fuelapp.IExtras;
 import com.rsmartin.fuelapp.R;
 import com.rsmartin.fuelapp.domain.model.DatosGasolinera;
 import com.rsmartin.fuelapp.domain.model.ListaDatosGasolineras;
+import com.rsmartin.fuelapp.presentation.internal.android.SharedPref;
+import com.rsmartin.fuelapp.presentation.ui.AbstractActivity;
+import com.rsmartin.fuelapp.utils.Utils;
 
 import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListaActivity extends AppCompatActivity {
+public class ListaActivity extends AbstractActivity {
 
     @BindView(R.id.toolbar_lista)
     Toolbar toolbar;
@@ -68,9 +73,10 @@ public class ListaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int pos = recyclerView.getChildAdapterPosition(view);
-                DatosGasolinera datosGasolinera = listaDatosGasolineras.getDatosGasolineraList().get(pos);
-
-                //Toast.makeText(ListaActivity.this, "item pulsado: "+pos+" "+datosGasolinera.getRotulo(), Toast.LENGTH_SHORT).show();
+                DatosGasolinera datosGasolinera = listAdapter.getItem(pos);
+                SharedPref.getInstance().saveStringPreferences("savedLat", datosGasolinera.getLat());
+                SharedPref.getInstance().saveStringPreferences("savedLon", datosGasolinera.getLon());
+                navigator.navigateToMaps(ListaActivity.this);
             }
         });
     }

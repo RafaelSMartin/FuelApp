@@ -57,6 +57,7 @@ import com.rsmartin.fuelapp.presentation.ui.AbstractFragmentActivity;
 import com.rsmartin.fuelapp.presentation.ui.customdetail.CustomDetailFragment;
 import com.rsmartin.fuelapp.presentation.ui.lista.ListaActivity;
 import com.rsmartin.fuelapp.utils.RateMyApp;
+import com.rsmartin.fuelapp.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -234,6 +235,29 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         drawOils(listOils);
 
         mMap.setOnMarkerClickListener(this);
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        String latPref = SharedPref.getInstance().getStringPreferences("savedLat");
+        String lonPref = SharedPref.getInstance().getStringPreferences("savedLon");
+        boolean isLatPref = latPref != null && !latPref.equals("");
+        boolean isLonPref = lonPref != null && !lonPref.equals("");
+
+        if(isLatPref && isLonPref) {
+            double lat = Utils.replaceComaToDot(latPref);
+            double lon = Utils.replaceComaToDot(lonPref);
+
+            if (lat != -1 && lon != -1 && mMap != null) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 25));
+                SharedPref.getInstance().removePreference("savedLat");
+                SharedPref.getInstance().removePreference("savedLon");
+            }
+        }
+
     }
 
     public void drawOils(List<DatosGasolinera> listOils) {
@@ -441,9 +465,6 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         }
         @Override
         protected void onPostExecute(List<DatosGasolinera> lists) {
-            for (DatosGasolinera item : lists) {
-                Log.e("Favorites", "nav_favoritos: " + item.toString());
-            }
             launchListaActivity(lists, "Favoritos");
         }
     }

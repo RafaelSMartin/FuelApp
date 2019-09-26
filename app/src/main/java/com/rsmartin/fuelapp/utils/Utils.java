@@ -1,5 +1,7 @@
 package com.rsmartin.fuelapp.utils;
 
+import android.util.Log;
+
 public class Utils {
 
 

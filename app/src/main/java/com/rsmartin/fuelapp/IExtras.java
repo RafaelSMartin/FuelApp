@@ -29,4 +29,5 @@ public interface IExtras {
     String ID_BANNER = "ca-app-pub-5611794729293328/8211620290";
     String ID_BANNER_TEST = "ca-app-pub-3940256099942544/6300978111";
 
+    String ARGS_DATOS_GASOL = "ArgsDatosGasol";
 }

@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static java.lang.Double.doubleToRawLongBits;
+
 public class SharedPref {
 
     private static SharedPref instance;

@@ -46,6 +46,7 @@
             android:label="@string/title_activity_login" />
         <activity
             android:name=".presentation.ui.map.MapsActivity"
+            android:launchMode="singleInstance"
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".presentation.ui.lista.ListaActivity"
