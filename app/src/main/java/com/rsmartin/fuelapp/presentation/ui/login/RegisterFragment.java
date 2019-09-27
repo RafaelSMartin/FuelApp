@@ -86,6 +86,7 @@ public class RegisterFragment extends AbstractFragment {
         AdView mAdView = view.findViewById(R.id.ad_view);
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice("8D10FA36EE0D8F85F9C7B1331F2F81D0")
+                .addTestDevice("FA02415696106289FBE38417A007FF69")
                 .build();
         mAdView.loadAd(adRequest);
     }

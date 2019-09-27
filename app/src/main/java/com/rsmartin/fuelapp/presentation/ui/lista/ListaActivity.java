@@ -1,5 +1,6 @@
 package com.rsmartin.fuelapp.presentation.ui.lista;
 
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -93,5 +94,11 @@ public class ListaActivity extends AbstractActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        navigator.navigateToMaps(this);
+    }
+
 
 }

@@ -204,6 +204,7 @@ public class SplashActivity extends AbstractActivity implements SplashPresenter.
         } else {
             navigator.navigateToLogin(getApplicationContext());
         }
+        finish();
 
     }
 

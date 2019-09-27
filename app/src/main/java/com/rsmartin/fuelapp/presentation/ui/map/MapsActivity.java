@@ -11,6 +11,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.MenuItem;
@@ -89,6 +90,7 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
     private Context context;
     private FirebaseUser user;
     private boolean isAnimationFinished;
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -342,8 +344,20 @@ public class MapsActivity extends AbstractFragmentActivity implements MapsPresen
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                System.exit(0);
+            }
         }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Porfavor click atrás de nuevo para salir", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 
     public class CustomMarkerClustering extends DefaultClusterRenderer<DatosGasolinera> {
