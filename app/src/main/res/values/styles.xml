@@ -34,9 +34,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="fuelapp_ClusterIcon.TextAppearance" parent="amu_ClusterIcon.TextAppearance">
-        <item name="android:textColor">@color/icons</item>
-    </style>
+<!--    <style name="fuelapp_ClusterIcon.TextAppearance" parent="amu_ClusterIcon.TextAppearance">-->
+<!--        <item name="android:textColor">@color/icons</item>-->
+<!--    </style>-->
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
